@@ -15,16 +15,14 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [toast, setToast] = useState("");
 
-  const handleLogin = async (e) => {
+   const handleLogin = async (e) => {
     e.preventDefault();
     setToast("");
 
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -37,7 +35,6 @@ export default function Login() {
       const user = await response.json();
       login(user);
       setToast("✅ Login successful!");
-
       setTimeout(() => navigate("/"), 1000);
     } catch (error) {
       setToast("⚠️ Backend not reachable (check server)");
