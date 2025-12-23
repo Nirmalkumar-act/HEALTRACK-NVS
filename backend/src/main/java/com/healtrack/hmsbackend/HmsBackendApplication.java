@@ -3,7 +3,7 @@ package com.healtrack.hmsbackend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.healtrack.hmsbackend")
+@SpringBootApplication
 public class HmsBackendApplication {
 
     public static void main(String[] args) {

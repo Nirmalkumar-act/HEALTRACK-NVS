@@ -16,11 +16,6 @@ public class UserController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        return ResponseEntity.ok(authService.register(user));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
 
@@ -29,7 +24,14 @@ public class UserController {
         if (loggedIn.isPresent()) {
             return ResponseEntity.ok(loggedIn.get());
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity
+                    .status(401)
+                    .body("Invalid credentials");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody User user) {
+        return ResponseEntity.ok(authService.register(user));
     }
 }
