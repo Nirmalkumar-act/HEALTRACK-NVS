@@ -25,3 +25,5 @@ public class CorsConfig {
         };
     }
 }
+
+//CorsConfig.java
