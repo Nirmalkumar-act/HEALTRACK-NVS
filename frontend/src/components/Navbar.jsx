@@ -20,6 +20,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -106,26 +107,21 @@ export default function Navbar() {
             <FaHospital className="nav-icon" /> HT
           </NavLink>
         </li>
-
-<NavLink
-    to="/mdr-dashboard"
-    className={({ isActive }) =>
-      `nav-link ${isActive ? "active" : ""}`
-    }
-  >
-    🧬 MDR
-  </NavLink>
-
+        
+ {/* ✅ FIX: MDR wrapped in <li> */}
         <li>
-  <NavLink
-    to="/MedWaste"
-    className={({ isActive }) =>
-      isActive ? "nav-link active" : "nav-link"
-    }
-  >
-    🧪 MW
-  </NavLink>
-</li>
+          <NavLink to="/mdr-dashboard" className="nav-link">
+            🧬 MDR
+          </NavLink>
+        </li>
+
+        {/* ✅ FIX: consistent route casing */}
+        <li>
+          <NavLink to="/medwaste" className="nav-link">
+            🧪 MW
+          </NavLink>
+        </li>
+
 
         {/* Profile Dropdown */}
         <li

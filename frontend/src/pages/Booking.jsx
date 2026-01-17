@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 import "../styles/Booking.css";
@@ -18,7 +18,6 @@ export default function Booking() {
   const [step, setStep] = useState(1);
   const [newToken, setNewToken] = useState(null);
 
-  // Booking details
   const [hospital, setHospital] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
@@ -29,81 +28,103 @@ export default function Booking() {
   const [doctor, setDoctor] = useState("");
   const [notes, setNotes] = useState("");
 
-  // Speech recognition
+  // 🔊 Voice
   const [speechText, setSpeechText] = useState("");
   const [listening, setListening] = useState(false);
+  const recognitionRef = useRef(null);
 
-  useEffect(() => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) return;
-
+  /* ================= SAFE VOICE START ================= */
+  const startVoiceFill = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech recognition not supported");
+      return;
+    }
+
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+
     const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = "en-US";
+    recognition.lang = "en-IN"; // works for Tamil + English mixed
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => setListening(false);
 
     recognition.onresult = (event) => {
-      let transcript = "";
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        transcript += event.results[i][0].transcript;
-      }
-      setSpeechText(transcript);
-      handleVoiceFill(transcript);
+      const text = event.results[0][0].transcript;
+      setSpeechText(text);
+      handleVoiceFillSmart(text);
     };
 
-    recognition.onerror = (event) => console.error(event.error);
-
-    if (listening) recognition.start();
-    else recognition.stop();
-
-    return () => recognition.stop();
-  }, [listening]);
-
-  const handleVoiceFill = (text) => {
-    const cleaned = text.toLowerCase().replace(/[.,]/g, "");
-
-    // Name
-    const nameMatch =
-      cleaned.match(/my name is (.+?)(?: age| gender| location| doctor|$)/) ||
-      cleaned.match(/name (?:is|as) (.+?)(?: age| gender| location| doctor|$)/);
-    if (nameMatch) setName(nameMatch[1].trim());
-
-    // Age
-    const ageMatch = cleaned.match(/age (?:is|of)? (\d{1,3})/);
-    if (ageMatch) setAge(ageMatch[1]);
-
-    // Gender
-    if (cleaned.includes("female")) setGender("Female");
-    else if (cleaned.includes("male")) setGender("Male");
-    else if (cleaned.includes("other")) setGender("Other");
-
-    // Weight
-    const weightMatch = cleaned.match(/weight (?:is|of)? (\d{1,3})/);
-    if (weightMatch) setWeight(weightMatch[1]);
-
-    // Location
-    const locationMatch =
-      cleaned.match(/location (?:is|at)? (.+?)(?: problem| condition| doctor|$)/) ||
-      cleaned.match(/i am from (.+?)(?: problem| condition| doctor|$)/);
-    if (locationMatch) setLocation(locationMatch[1].trim());
-
-    // Condition / Problem
-    const condMatch =
-      cleaned.match(/problem (?:is|of)? (.+?)(?: doctor|$)/) ||
-      cleaned.match(/condition (?:is|of)? (.+?)(?: doctor|$)/);
-    if (condMatch) setCondition(condMatch[1].trim());
-
-    // Doctor
-    const docMatch =
-      cleaned.match(/doctor (?:is|name is)? (.+?)(?: location| problem|$)/);
-    if (docMatch) setDoctor(docMatch[1].trim());
+    recognitionRef.current = recognition;
+    recognition.start();
   };
 
+  /* ================= SAFE VOICE PARSER ================= */
+  const handleVoiceFillSmart = (speech) => {
+    const text = speech.toLowerCase();
+
+    // NAME
+    if (!name) {
+      const guess = speech.split(/[,.]/)[0];
+      if (guess.length < 30) setName(guess.trim());
+    }
+
+    // AGE
+    if (!age) {
+      const m = text.match(/\b([1-9][0-9]|1[01][0-9]|120)\b/);
+      if (m) setAge(m[1]);
+    }
+
+    // GENDER
+    if (!gender) {
+      if (text.includes("male") || text.includes("ஆண்")) setGender("Male");
+      if (text.includes("female") || text.includes("பெண்")) setGender("Female");
+    }
+
+    // WEIGHT
+    if (!weight) {
+      const nums = text.match(/\b\d+\b/g);
+      if (nums) {
+        const w = nums.find((n) => n > 30 && n < 200);
+        if (w) setWeight(w);
+      }
+    }
+
+    // LOCATION
+    if (!location) {
+      if (text.includes("chennai")) setLocation("Chennai");
+      if (text.includes("madurai")) setLocation("Madurai");
+      if (text.includes("coimbatore")) setLocation("Coimbatore");
+    }
+
+    // CONDITION
+    if (!condition) {
+      if (text.includes("fever") || text.includes("காய்ச்சல்"))
+        setCondition("Fever");
+      if (text.includes("pain") || text.includes("வலி"))
+        setCondition("Pain");
+    }
+
+    // DOCTOR
+    if (!doctor && text.includes("doctor")) {
+      const d = speech.split("doctor")[1];
+      if (d) setDoctor(d.trim());
+    }
+  };
+
+  /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim() || !age || !gender || !location.trim() || !doctor.trim()) {
-      alert("Please fill all required fields.");
+
+    if (!name || !age || !gender || !location || !doctor) {
+      alert("Please fill required fields");
       return;
     }
 
@@ -129,6 +150,7 @@ export default function Booking() {
     setStep(3);
   };
 
+
   return (
     <div className="booking-wrapper">
       <div className="booking-page">
@@ -137,13 +159,11 @@ export default function Booking() {
           Choose an identification method → Fill details → Get Token.
         </p>
 
-        {/* Voice recognition toggle */}
-        <button
-          className={`btn ${listening ? "secondary" : "primary"}`}
-          onClick={() => setListening(!listening)}
-        >
-          {listening ? "🎙️ Stop Listening" : "🎤 Start Voice Fill"}
+{/* 🔊 ONLY BUTTON CHANGE */}
+        <button className="btn primary" onClick={startVoiceFill}>
+          🎤 Speak
         </button>
+
         <p className="speech-preview">{speechText}</p>
 
         {/* Select method */}

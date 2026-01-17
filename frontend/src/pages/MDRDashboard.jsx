@@ -134,46 +134,66 @@ export default function MdrDashboard() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {filteredPatients.length === 0 ? (
-              <tr>
-                <td colSpan="8" className="no-data">No reports uploaded yet</td>
-              </tr>
-            ) : (
-              filteredPatients.map((p, index) => (
-                <tr key={p.id} className="fade-row">
-                  <td>{index + 1}</td>
-                  <td>{p.name}</td>
-                  <td>{p.ward}</td>
-                  <td>{p.device}</td>
-                  <td>{p.score}</td>
-                  <td>
-                    <span
-                      className="risk-pill"
-                      style={{ backgroundColor: getRiskColor(p.riskLevel) }}
-                    >
-                      {p.riskLevel}
-                    </span>
-                  </td>
-                  <td>{p.date}</td>
-                  <td>
-                    <button
-                      className="action-btn view"
-                      onClick={() => handleViewHistory(p)}
-                    >
-                      📜 History
-                    </button>
-                    <button
-                      className="action-btn delete"
-                      onClick={() => handleDelete(p.id)}
-                    >
-                      🗑 Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
+<tbody>
+  {filteredPatients.length === 0 ? (
+    <tr>
+      <td colSpan="8" className="no-data" data-label="Status">
+        No reports uploaded yet
+      </td>
+    </tr>
+  ) : (
+    filteredPatients.map((p, index) => (
+      <tr key={p.id} className="fade-row">
+        <td data-label="#"> {index + 1} </td>
+
+        <td data-label="Patient Name">
+          {p.name}
+        </td>
+
+        <td data-label="Ward">
+          {p.ward}
+        </td>
+
+        <td data-label="Device Usage">
+          {p.device}
+        </td>
+
+        <td data-label="Risk Score">
+          {p.score}
+        </td>
+
+        <td data-label="Risk Level">
+          <span
+            className="risk-pill"
+            style={{ backgroundColor: getRiskColor(p.riskLevel) }}
+          >
+            {p.riskLevel}
+          </span>
+        </td>
+
+        <td data-label="Date">
+          {p.date}
+        </td>
+
+        <td data-label="Actions">
+          <button
+            className="action-btn view"
+            onClick={() => handleViewHistory(p)}
+          >
+            📜 History
+          </button>
+          <button
+            className="action-btn delete"
+            onClick={() => handleDelete(p.id)}
+          >
+            🗑 Delete
+          </button>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
         </table>
       </div>
     </div>

@@ -244,14 +244,10 @@
 }
 
 
-/* === RESPONSIVE NAVBAR === */
+/* === RESPONSIVE NAVBAR (Mobile) === */
 @media (max-width: 768px) {
   .navbar {
     padding: 14px 25px;
-      .navbar-links li:nth-child(3),
-  .navbar-links li:nth-child(6) {
-    display: none !important;
-  }
   }
 
   .menu-toggle {
@@ -275,8 +271,28 @@
     right: 20px;
   }
 
+  /* ✅ HIDE DD & MW ONLY ON MOBILE */
+  .nav-dd,
+  .nav-mw {
+    display: none !important;
+  }
+
   .auth-links .nav-link {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* === MOBILE ONLY: Hide DD & MW === */
+@media (max-width: 768px) {
+
+  /* Hide Doctor Dashboard (DD) */
+  .navbar-links a[href="/dashboard"] {
+    display: none !important;
+  }
+
+  /* Hide Medical Waste (MW) */
+  .navbar-links a[href="/medwaste"] {
+    display: none !important;
   }
 }
