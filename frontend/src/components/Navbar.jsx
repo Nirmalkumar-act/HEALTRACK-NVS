@@ -108,14 +108,14 @@ export default function Navbar() {
           </NavLink>
         </li>
         
- {/* ✅ FIX: MDR wrapped in <li> */}
+
         <li>
           <NavLink to="/mdr-dashboard" className="nav-link">
             🧬 MDR
           </NavLink>
         </li>
 
-        {/* ✅ FIX: consistent route casing */}
+       
         <li>
           <NavLink to="/medwaste" className="nav-link">
             🧪 MW
