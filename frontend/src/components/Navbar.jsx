@@ -123,7 +123,7 @@ export default function Navbar() {
         </li>
 
 
-        {/* Profile Dropdown */}
+        
         <li
           className="profile-dropdown"
           onClick={() => setDropdownOpen(!dropdownOpen)}
