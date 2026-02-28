@@ -1,23 +1,42 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
+import { AuthContext } from "../context/AuthContext";
 import "../styles/Booking.css";
 
 export default function Booking() {
+
   const nav = useNavigate();
   const { addBooking, getQueueStatus, bookings } = useBooking();
 
-  const methods = [
-    { type: "AADHAAR", label: "GET TOKEN", icon: "🆔" },
-    { type: "QR", label: "QR Code", icon: "📱" },
-    { type: "GANTRADE", label: "Gantrade Card", icon: "💳" },
-    { type: "ONLINE", label: "Online Booking", icon: "🌐" },
-  ];
+  // ✅ FIRST define user & role
+  const { user } = useContext(AuthContext);
+  const role = user?.role;
+
+  // ✅ THEN define methods (after role exists)
+ const methods = [
+  // ✅ ONLINE visible for ALL roles
+  { type: "ONLINE", label: "Online Booking", icon: "🌐" },
+
+  // Doctor + Management
+  ...(role === "Doctor" || role === "Management"
+    ? [{ type: "AADHAAR", label: "GET TOKEN", icon: "🆔" }]
+    : []),
+
+  // Management only
+  ...(role === "Management"
+    ? [
+        { type: "QR", label: "QR Code", icon: "📱" },
+        { type: "GANTRADE", label: "Gantrade Card", icon: "💳" },
+      ]
+    : []),
+];
 
   const [scanType, setScanType] = useState("");
   const [step, setStep] = useState(1);
   const [newToken, setNewToken] = useState(null);
 
+  // Booking details
   const [hospital, setHospital] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
@@ -28,109 +47,88 @@ export default function Booking() {
   const [doctor, setDoctor] = useState("");
   const [notes, setNotes] = useState("");
 
-  // 🔊 Voice
+  // Speech recognition
   const [speechText, setSpeechText] = useState("");
   const [listening, setListening] = useState(false);
-  const recognitionRef = useRef(null);
 
-  /* ================= SAFE VOICE START ================= */
-  const startVoiceFill = () => {
+  useEffect(() => {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) return;
+
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Speech recognition not supported");
-      return;
-    }
-
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-
     const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN"; // works for Tamil + English mixed
-    recognition.interimResults = false;
-    recognition.continuous = false;
-
-    recognition.onstart = () => setListening(true);
-    recognition.onend = () => setListening(false);
-    recognition.onerror = () => setListening(false);
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
 
     recognition.onresult = (event) => {
-      const text = event.results[0][0].transcript;
-      setSpeechText(text);
-      handleVoiceFillSmart(text);
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        transcript += event.results[i][0].transcript;
+      }
+      setSpeechText(transcript);
+      handleVoiceFill(transcript);
     };
 
-    recognitionRef.current = recognition;
-    recognition.start();
+    recognition.onerror = (event) => console.error(event.error);
+
+    if (listening) recognition.start();
+    else recognition.stop();
+
+    return () => recognition.stop();
+  }, [listening]);
+
+  const handleVoiceFill = (text) => {
+    const cleaned = text.toLowerCase().replace(/[.,]/g, "");
+
+    // Name
+    const nameMatch =
+      cleaned.match(/my name is (.+?)(?: age| gender| location| doctor|$)/) ||
+      cleaned.match(/name (?:is|as) (.+?)(?: age| gender| location| doctor|$)/);
+    if (nameMatch) setName(nameMatch[1].trim());
+
+    // Age
+    const ageMatch = cleaned.match(/age (?:is|of)? (\d{1,3})/);
+    if (ageMatch) setAge(ageMatch[1]);
+
+    // Gender
+    if (cleaned.includes("female")) setGender("Female");
+    else if (cleaned.includes("male")) setGender("Male");
+    else if (cleaned.includes("other")) setGender("Other");
+
+    // Weight
+    const weightMatch = cleaned.match(/weight (?:is|of)? (\d{1,3})/);
+    if (weightMatch) setWeight(weightMatch[1]);
+
+    // Location
+    const locationMatch =
+      cleaned.match(/location (?:is|at)? (.+?)(?: problem| condition| doctor|$)/) ||
+      cleaned.match(/i am from (.+?)(?: problem| condition| doctor|$)/);
+    if (locationMatch) setLocation(locationMatch[1].trim());
+
+    // Condition / Problem
+    const condMatch =
+      cleaned.match(/problem (?:is|of)? (.+?)(?: doctor|$)/) ||
+      cleaned.match(/condition (?:is|of)? (.+?)(?: doctor|$)/);
+    if (condMatch) setCondition(condMatch[1].trim());
+
+    // Doctor
+    const docMatch =
+      cleaned.match(/doctor (?:is|name is)? (.+?)(?: location| problem|$)/);
+    if (docMatch) setDoctor(docMatch[1].trim());
   };
 
-  /* ================= SAFE VOICE PARSER ================= */
-  const handleVoiceFillSmart = (speech) => {
-    const text = speech.toLowerCase();
-
-    // NAME
-    if (!name) {
-      const guess = speech.split(/[,.]/)[0];
-      if (guess.length < 30) setName(guess.trim());
-    }
-
-    // AGE
-    if (!age) {
-      const m = text.match(/\b([1-9][0-9]|1[01][0-9]|120)\b/);
-      if (m) setAge(m[1]);
-    }
-
-    // GENDER
-    if (!gender) {
-      if (text.includes("male") || text.includes("ஆண்")) setGender("Male");
-      if (text.includes("female") || text.includes("பெண்")) setGender("Female");
-    }
-
-    // WEIGHT
-    if (!weight) {
-      const nums = text.match(/\b\d+\b/g);
-      if (nums) {
-        const w = nums.find((n) => n > 30 && n < 200);
-        if (w) setWeight(w);
-      }
-    }
-
-    // LOCATION
-    if (!location) {
-      if (text.includes("chennai")) setLocation("Chennai");
-      if (text.includes("madurai")) setLocation("Madurai");
-      if (text.includes("coimbatore")) setLocation("Coimbatore");
-    }
-
-    // CONDITION
-    if (!condition) {
-      if (text.includes("fever") || text.includes("காய்ச்சல்"))
-        setCondition("Fever");
-      if (text.includes("pain") || text.includes("வலி"))
-        setCondition("Pain");
-    }
-
-    // DOCTOR
-    if (!doctor && text.includes("doctor")) {
-      const d = speech.split("doctor")[1];
-      if (d) setDoctor(d.trim());
-    }
-  };
-
-  /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !age || !gender || !location || !doctor) {
-      alert("Please fill required fields");
+    if (!name.trim() || !age || !gender || !location.trim() || !doctor.trim()) {
+      alert("Please fill all required fields.");
       return;
     }
 
     const token = Math.floor(1000 + Math.random() * 9000);
 
-    addBooking({
+    const bookingData = {
       token,
       scanType,
       hospital,
@@ -142,14 +140,23 @@ export default function Booking() {
       condition,
       doctor,
       notes,
-      time: new Date().toLocaleTimeString(),
       date: new Date().toLocaleDateString(),
-    });
+      time: new Date().toLocaleTimeString(),
+    };
+
+    try {
+      await addBooking(bookingData); // ✅ CONTEXT CALL
+      setNewToken(token);
+      setStep(3);
+    } catch (err) {
+      console.error(err);
+      alert("Booking failed. Try again.");
+    };
+
 
     setNewToken(token);
     setStep(3);
   };
-
 
   return (
     <div className="booking-wrapper">
@@ -159,11 +166,13 @@ export default function Booking() {
           Choose an identification method → Fill details → Get Token.
         </p>
 
-{/* 🔊 ONLY BUTTON CHANGE */}
-        <button className="btn primary" onClick={startVoiceFill}>
-          🎤 Speak
+        {/* Voice recognition toggle */}
+        <button
+          className={`btn ${listening ? "secondary" : "primary"}`}
+          onClick={() => setListening(!listening)}
+        >
+          {listening ? "🎙️ Stop Listening" : "🎤 Start Voice Fill"}
         </button>
-
         <p className="speech-preview">{speechText}</p>
 
         {/* Select method */}
@@ -487,4 +496,4 @@ export default function Booking() {
       </div>
     </div>
   );
-}
+} 

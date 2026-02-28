@@ -33,9 +33,19 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup"; // ✅ added
 
 // 🔒 Protected Route Wrapper
-const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useContext(AuthContext);
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
+
+const ProtectedRoute = ({ children, roles }) => {
+  const { isLoggedIn, user } = useContext(AuthContext);
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (roles && !roles.includes(user?.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 function App() {
@@ -148,7 +158,7 @@ function App() {
               <Route
                 path="/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute roles={["Doctor", "Management"]}>
                     <DoctorDashboard />
                   </ProtectedRoute>
                 }
@@ -204,7 +214,7 @@ function App() {
               <Route
                 path="/medwaste"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute roles={["Management"]}>
                     <MedWaste />
                   </ProtectedRoute>
                 }

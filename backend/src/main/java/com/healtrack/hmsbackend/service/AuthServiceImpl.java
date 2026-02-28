@@ -13,11 +13,25 @@ public class AuthServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public User register(User user) {
-        return userRepository.save(user);
+@Override
+public User register(User user) {
+
+    if (user == null) {
+        throw new IllegalArgumentException("User cannot be null");
     }
 
+    // ✅ Default role if not provided
+    if (user.getRole() == null || user.getRole().isEmpty()) {
+        user.setRole("USER");
+    }
+
+    // ✅ Default name if null
+    if (user.getName() == null || user.getName().isEmpty()) {
+        user.setName("Guest");
+    }
+
+    return userRepository.save(user);
+}
     @Override
     public User login(String email, String password) {
         return userRepository.findByEmail(email)

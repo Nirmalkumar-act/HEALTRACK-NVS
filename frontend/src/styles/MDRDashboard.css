@@ -133,3 +133,198 @@
 .fade-row {
   animation: fadeIn 0.6s ease-in;
 }
+/* ============================
+   LARGE DESKTOP (1400px+)
+============================ */
+@media (min-width: 1400px) {
+  .mdr-dashboard {
+    padding: 50px;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .search-box {
+    width: 320px;
+  }
+}
+
+/* ============================
+   DESKTOP / LAPTOP (1024px – 1399px)
+============================ */
+@media (max-width: 1399px) {
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .search-box {
+    width: 280px;
+  }
+}
+
+/* ============================
+   TABLET LANDSCAPE (768px – 1023px)
+============================ */
+@media (max-width: 1023px) {
+  .top-controls {
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .patient-table th,
+  .patient-table td {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
+/* ============================
+   TABLET PORTRAIT (600px – 767px)
+============================ */
+@media (max-width: 767px) {
+  .mdr-dashboard {
+    padding: 20px;
+  }
+
+  .top-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .upload-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .patient-table th,
+  .patient-table td {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+}
+
+/* ============================
+   MOBILE LARGE (480px – 599px)
+============================ */
+@media (max-width: 599px) {
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .patient-table {
+    font-size: 0.85rem;
+  }
+
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================
+   MOBILE SMALL (Below 480px)
+============================ */
+@media (max-width: 479px) {
+  .mdr-dashboard {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .search-box {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  .patient-table th {
+    font-size: 0.75rem;
+  }
+
+  .patient-table td {
+    font-size: 0.8rem;
+  }
+
+  .risk-pill {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}
+/* ============================
+   MOBILE: TABLE → VERTICAL CARDS
+============================ */
+@media (max-width: 600px) {
+
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .patient-table,
+  .patient-table thead,
+  .patient-table tbody,
+  .patient-table th,
+  .patient-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide table header */
+  .patient-table thead {
+    display: none;
+  }
+
+  /* Card style row */
+  .patient-table tr {
+    background: #ffffff;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .patient-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  .patient-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Label before value */
+  .patient-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #512da8;
+    text-align: left;
+  }
+
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .risk-pill {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}

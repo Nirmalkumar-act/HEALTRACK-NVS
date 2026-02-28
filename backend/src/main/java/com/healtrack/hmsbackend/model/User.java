@@ -14,6 +14,9 @@ public class User {
     private String password;
     private String name;
 
+    // ✅ ADD THIS
+    private String role;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -25,4 +28,8 @@ public class User {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    // ✅ ADD THESE
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

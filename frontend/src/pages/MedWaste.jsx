@@ -108,7 +108,7 @@ export default function MedWaste() {
     plasticWaste: 40,
     electricity: 38 * conversionFactor + " kWh",
   };
-
+  
   return (
     <div className="med-container">
       <motion.div

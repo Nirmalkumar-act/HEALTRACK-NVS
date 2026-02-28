@@ -18,6 +18,11 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const hasRole = (roles) => {
+    if (!user) return false;
+    return roles.includes(user.role);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -25,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         isLoggedIn: !!user,
+        hasRole,
       }}
     >
       {children}

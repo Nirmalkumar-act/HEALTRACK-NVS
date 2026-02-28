@@ -20,7 +20,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  
+  const role = user?.role;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -36,15 +36,11 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-     {/* Logo Image */}
       <div className="navbar-logo">
-  <img src={Logo} alt="Heal Track Logo" className="logo-img" />
-  <span className="logo-text">HEAL TRACK</span>
-  </div>
+        <img src={Logo} alt="Heal Track Logo" className="logo-img" />
+        <span className="logo-text">HEAL TRACK</span>
+      </div>
 
-
-
-      {/* Hamburger Menu */}
       <div
         className={`menu-toggle ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -54,60 +50,39 @@ export default function Navbar() {
         <div></div>
       </div>
 
-      {/* Navbar Links */}
       <ul className={`navbar-links ${menuOpen ? "active" : ""}`}>
+
         <li>
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <FaHome className="nav-icon" /> Home
+          <NavLink to="/" className="nav-link">
+            <FaHome /> Home
           </NavLink>
         </li>
+
         <li>
-          <NavLink
-            to="/booking"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <FaBookMedical className="nav-icon" /> Booking
+          <NavLink to="/booking" className="nav-link">
+            <FaBookMedical /> Booking
           </NavLink>
         </li>
+
+        {(role === "Doctor" || role === "Management") && (
+          <li>
+            <NavLink to="/dashboard" className="nav-link">
+              <FaUserMd /> DD
+            </NavLink>
+          </li>
+        )}
+
         <li>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <FaUserMd className="nav-icon" /> DD
+          <NavLink to="/waiting" className="nav-link">
+            <FaClock /> WD
           </NavLink>
         </li>
+
         <li>
-          <NavLink
-            to="/waiting"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <FaClock className="nav-icon" /> WD
+          <NavLink to="/tracker" className="nav-link">
+            <FaHospital /> HT
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to="/tracker"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <FaHospital className="nav-icon" /> HT
-          </NavLink>
-        </li>
-        
 
         <li>
           <NavLink to="/mdr-dashboard" className="nav-link">
@@ -115,15 +90,14 @@ export default function Navbar() {
           </NavLink>
         </li>
 
-       
-        <li>
-          <NavLink to="/medwaste" className="nav-link">
-            🧪 MW
-          </NavLink>
-        </li>
+        {role === "Management" && (
+          <li>
+            <NavLink to="/medwaste" className="nav-link">
+              🧪 MW
+            </NavLink>
+          </li>
+        )}
 
-
-        
         <li
           className="profile-dropdown"
           onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -134,13 +108,13 @@ export default function Navbar() {
               {!isLoggedIn && (
                 <li>
                   <NavLink to="/login" className="dropdown-link">
-                    <FaSignInAlt style={{ marginRight: "8px" }} /> Login
+                    <FaSignInAlt /> Login
                   </NavLink>
                 </li>
               )}
               {isLoggedIn && (
                 <li className="dropdown-link" onClick={handleLogout}>
-                  <FaSignOutAlt style={{ marginRight: "8px" }} /> Logout
+                  <FaSignOutAlt /> Logout
                 </li>
               )}
             </ul>
