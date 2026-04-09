@@ -1,52 +1,109 @@
-/* Ensure the app takes full height */
+/* ── Reset & Base ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 html, body, #root {
   height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
-/* Make the wrapper fill the viewport */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #f5f7fb;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── App Layout ───────────────────────────────────────────── */
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* full viewport height */
+  min-height: 100vh;
 }
 
-/* Content grows and pushes footer down */
 .main-content {
   flex: 1;
+  /* NO padding — each page handles its own spacing */
 }
 
-/* Footer sticks at bottom without extra space */
-.footer {
-  margin-top: auto;   /* push footer to bottom */
+.footer { margin-top: auto; }
+
+/* ── Google Translate — Fixed Floating (Bottom-Right) ─────── */
+
+/* 1. Kill the default inline bar so there's ZERO gap */
+#google_translate_element,
+.goog-te-gadget-simple,
+.goog-te-menu-value {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
-
-
-/* Global styles */
-* { 
-  box-sizing: border-box; 
-  font-family: Arial, sans-serif; 
+/* 2. Our custom floating wrapper */
+.gt-float-wrap {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 50px;
+  padding: 6px 12px 6px 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
-body { 
-  margin: 0; 
-  background:#f7f8fc; 
-  color:#222; 
+.gt-float-wrap:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
 }
-.container { 
-  max-width: 1000px; 
-  margin: 32px auto; 
-  padding: 16px; 
-  background: #fff; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+
+/* Globe emoji */
+.gt-label {
+  font-size: 1.1rem;
+  line-height: 1;
 }
-h1 { margin: 0 0 12px; }
-.row { display:flex; gap:16px; }
-.col { flex:1; }
-.small { font-size:0.9rem; color:#555; }
-.error { color: #b00020; margin-top:6px; }
 
+/* Show the translate widget inside the float wrap */
+.gt-float-wrap #google_translate_element {
+  display: block !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+.gt-float-wrap .goog-te-gadget-simple {
+  display: inline-flex !important;
+  height: auto !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: 0.82rem !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.gt-float-wrap .goog-te-menu-value {
+  display: inline-flex !important;
+  align-items: center !important;
+  color: #333 !important;
+  font-weight: 500 !important;
+}
+.gt-float-wrap .goog-te-gadget-simple img { display: none !important; }
 
+/* Hide Google Translate top banner */
+.goog-te-banner-frame,
+.skiptranslate > iframe { display: none !important; }
+body { top: 0 !important; }
+
+/* ── Utility ──────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.row { display: flex; gap: 16px; }
+.col { flex: 1; }
+.small { font-size: 0.9rem; color: #555; }
+.error { color: #b00020; margin-top: 6px; }

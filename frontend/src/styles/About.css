@@ -1,87 +1,158 @@
+/* ── About.css — Premium Design ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 .about-page {
-  font-family: 'Poppins', sans-serif;
-  color: #333;
-  padding: 50px 20px;
-  max-width: 1100px;
-  margin: auto;
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  color: #1a1a2e;
+  line-height: 1.7;
+  overflow-x: hidden;
 }
 
+/* ── Hero ──────────────────────────────────────────────────────── */
 .about-hero {
+  background: linear-gradient(135deg, #0f1117 0%, #1a1f35 60%, #0d2a4a 100%);
+  padding: 80px 24px 60px;
   text-align: center;
-  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
 }
-
+.about-hero::before {
+  content: "";
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: rgba(108,99,255,0.1);
+  top: -150px; right: -100px;
+  filter: blur(80px);
+  pointer-events: none;
+}
 .about-hero h1 {
-  font-size: 2.5rem;
-  color: #1a73e8;
-  margin-bottom: 10px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #6c63ff, #56ccf2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-
 .about-hero p {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 600px;
+  margin: 0 auto 28px;
 }
-
 .about-hero-img {
   width: 100%;
-  max-width: 800px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  max-width: 780px;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* ── Body Sections ─────────────────────────────────────────────── */
 .about-content,
 .about-features,
 .about-vision {
-  margin-bottom: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.about-content h2,
+.about-features h2,
+.about-vision h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1558b0;
+  margin-bottom: 16px;
+  position: relative;
+  padding-bottom: 12px;
+}
+.about-content h2::after,
+.about-features h2::after,
+.about-vision h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 52px; height: 3px;
+  background: linear-gradient(90deg, #6c63ff, #56ccf2);
+  border-radius: 2px;
+}
+
+.about-content p,
+.about-vision p {
+  font-size: 1.05rem;
+  color: #444;
+  margin-bottom: 16px;
 }
 
 .about-content img,
 .about-vision img {
   width: 100%;
   max-width: 600px;
-  border-radius: 10px;
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.1);
   display: block;
-  margin: 20px auto;
+  margin: 28px auto;
 }
 
+/* ── Features List ─────────────────────────────────────────────── */
+.about-features {
+  background: #f8faff;
+}
 .about-features ul {
   list-style: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
 }
-
 .about-features li {
-  margin: 8px 0;
-  font-size: 1.1rem;
-  padding-left: 20px;
+  background: #fff;
+  border: 1px solid rgba(108,99,255,0.12);
+  border-radius: 12px;
+  padding: 16px 20px 16px 48px;
+  font-size: 0.97rem;
+  color: #333;
+  font-weight: 500;
   position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.about-features li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
 .about-features li::before {
   content: "✔";
   position: absolute;
-  left: 0;
-  color: #1a73e8;
-  font-weight: bold;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c63ff;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
-.about-vision h2 {
-  color: #1a73e8;
-}
+/* ── Vision ────────────────────────────────────────────────────── */
+.about-vision { border-top: 1px solid #eee; }
 
-/* Smooth animations */
+/* ── Animations ────────────────────────────────────────────────── */
 .about-page img {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease forwards;
 }
-
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 600px) {
+  .about-hero h1 { font-size: 2rem; }
+  .about-content, .about-features, .about-vision { padding: 40px 16px; }
+}

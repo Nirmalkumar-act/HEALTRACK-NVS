@@ -1,0 +1,178 @@
+/* src/styles/DataExport.css */
+
+.export-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  padding: 48px 20px 60px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+/* Header */
+.export-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.export-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #a8edea, #fed6e3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.export-header p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.95rem;
+}
+
+/* Export All button */
+.export-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 48px;
+  padding: 16px 36px;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  border: none;
+  border-radius: 50px;
+  color: #1a1a2e;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 8px 24px rgba(67,233,123,0.35);
+}
+.export-all-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(67,233,123,0.45);
+}
+.export-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Grid of sheet cards */
+.export-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual sheet card */
+.export-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 28px 24px;
+  transition: all 0.3s;
+  animation: fadeUp 0.4s ease both;
+}
+.export-card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+}
+
+.export-card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.export-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.export-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.export-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.export-record-count {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.export-record-count strong {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+}
+
+/* Download button */
+.export-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.export-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Color variants */
+.export-btn.green  { background: linear-gradient(135deg,#43e97b,#38f9d7); color: #1a1a2e; }
+.export-btn.blue   { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; }
+.export-btn.orange { background: linear-gradient(135deg,#f7971e,#ffd200); color: #1a1a2e; }
+.export-btn.pink   { background: linear-gradient(135deg,#f093fb,#f5576c); color: #fff; }
+.export-btn.teal   { background: linear-gradient(135deg,#4facfe,#00f2fe); color: #1a1a2e; }
+
+/* Loading spinner */
+.export-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Status bar */
+.export-status {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 14px 20px;
+  background: rgba(67,233,123,0.1);
+  border: 1px solid rgba(67,233,123,0.3);
+  border-radius: 12px;
+  text-align: center;
+  color: #43e97b;
+  font-weight: 600;
+  font-size: 0.92rem;
+  animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,351 @@
+/* ── AppointmentStatus.css — VitalsTracker-style design ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Full-page dark background — no white sides */
+.as-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1117, #1a2332, #0f2027);
+  padding: 40px 16px 60px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+/* ── Content container ─────────────────────────────────── */
+.as-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.as-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.as-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #56ccf2, #6c63ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px;
+}
+.as-header p {
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ── Tabs ──────────────────────────────────────────────── */
+.as-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.as-tab {
+  flex: 1;
+  padding: 11px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.as-tab:hover {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.8);
+}
+.as-tab.active {
+  background: rgba(86,204,242,0.15);
+  border-color: #56ccf2;
+  color: #56ccf2;
+}
+
+/* ── Main Card ─────────────────────────────────────────── */
+.as-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+/* ── Search Form ───────────────────────────────────────── */
+.as-form {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+.as-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.as-input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1rem;
+  opacity: 0.6;
+}
+.as-input {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 12px;
+  color: #fff;
+  padding: 13px 14px 13px 44px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+.as-input:focus { border-color: #56ccf2; }
+.as-input::placeholder { color: rgba(255,255,255,0.3); }
+
+.as-search-btn {
+  background: linear-gradient(135deg, #56ccf2, #6c63ff);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: 'Inter', sans-serif;
+}
+.as-search-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(86,204,242,0.35);
+}
+.as-search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.as-error {
+  color: #e96c6c;
+  font-size: 0.9rem;
+  margin: 12px 0 0;
+  padding: 12px 16px;
+  background: rgba(233,108,108,0.1);
+  border: 1px solid rgba(233,108,108,0.25);
+  border-radius: 10px;
+}
+
+/* ── Result Section ────────────────────────────────────── */
+.as-result { margin-top: 24px; }
+
+/* Status Banner */
+.as-status-banner {
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  text-align: center;
+  border: 1px solid;
+  animation: fadeUp 0.4s ease;
+}
+.as-status-banner.st-waiting  { background: rgba(247,151,30,0.12); border-color: rgba(247,151,30,0.35); }
+.as-status-banner.st-consult  { background: rgba(86,204,242,0.12); border-color: rgba(86,204,242,0.35); }
+.as-status-banner.st-done     { background: rgba(67,233,123,0.12); border-color: rgba(67,233,123,0.35); }
+.as-status-banner.st-cancel   { background: rgba(233,108,108,0.1); border-color: rgba(233,108,108,0.3); }
+
+.as-status-label {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.as-status-banner.st-waiting  .as-status-label { color: #f7971e; }
+.as-status-banner.st-consult  .as-status-label { color: #56ccf2; }
+.as-status-banner.st-done     .as-status-label { color: #43e97b; }
+.as-status-banner.st-cancel   .as-status-label { color: #e96c6c; }
+.as-status-msg { color: rgba(255,255,255,0.6); margin: 0; font-size: 0.9rem; }
+
+/* ── Progress Steps ────────────────────────────────────── */
+.as-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.3s;
+}
+.step-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+}
+.step-item.done .step-circle {
+  background: rgba(67,233,123,0.2);
+  border-color: #43e97b;
+  color: #43e97b;
+}
+.step-item.done .step-label { color: #43e97b; }
+.step-item.current .step-circle {
+  background: rgba(86,204,242,0.2);
+  border-color: #56ccf2;
+  color: #56ccf2;
+  box-shadow: 0 0 12px rgba(86,204,242,0.4);
+}
+.step-item.current .step-label { color: #56ccf2; font-weight: 700; }
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 8px;
+  margin-bottom: 20px;
+  min-width: 30px;
+}
+.step-line.done { background: #43e97b; }
+
+/* ── Booking Details ───────────────────────────────────── */
+.as-details {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.as-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.as-detail-row:last-child { border-bottom: none; }
+.dt-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.4px;
+  font-weight: 600;
+}
+.dt-badge {
+  background: rgba(86,204,242,0.15);
+  border: 1px solid rgba(86,204,242,0.3);
+  color: #56ccf2;
+  border-radius: 8px;
+  padding: 3px 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* ── Auto-refresh ──────────────────────────────────────── */
+.as-refresh-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.as-refresh-btn {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.as-refresh-btn.on {
+  background: rgba(67,233,123,0.15);
+  border-color: #43e97b;
+  color: #43e97b;
+}
+.as-refresh-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* ── My Appointments List ──────────────────────────────── */
+.as-my-list { display: flex; flex-direction: column; gap: 14px; }
+
+.as-my-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 18px 20px;
+  transition: all 0.3s;
+  animation: fadeUp 0.4s ease both;
+}
+.as-my-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(86,204,242,0.3);
+}
+.my-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.my-token {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #56ccf2;
+}
+.my-status {
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.my-status.st-waiting  { background: rgba(247,151,30,0.15);  color: #f7971e; }
+.my-status.st-consult  { background: rgba(86,204,242,0.15);  color: #56ccf2; }
+.my-status.st-done     { background: rgba(67,233,123,0.15);  color: #43e97b; }
+.my-status.st-cancel   { background: rgba(233,108,108,0.12); color: #e96c6c; }
+
+.my-card-info {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+}
+.my-card-condition {
+  margin-top: 10px;
+  font-size: 0.84rem;
+  color: rgba(255,255,255,0.5);
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+}
+
+/* ── Animation ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .as-wrapper { padding: 24px 12px 40px; }
+  .as-header h1 { font-size: 1.6rem; }
+  .as-card { padding: 20px 16px; }
+  .my-card-info { flex-direction: column; gap: 6px; }
+}

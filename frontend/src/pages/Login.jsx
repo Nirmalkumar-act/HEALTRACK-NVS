@@ -19,15 +19,15 @@ export default function Login() {
   e.preventDefault();
   setToast("");
 
-  try {
-const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ email, password }),
-});
+  // Build clean base URL (strip trailing slash)
+  const base = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
 
+  try {
+    const response = await fetch(`${base}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
     if (!response.ok) {
       const msg = await response.text();
@@ -41,7 +41,7 @@ const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
     setTimeout(() => navigate("/"), 1000);
 
   } catch (err) {
-    setToast("⚠️ Backend not reachable");
+    setToast("⚠️ Backend not reachable — make sure the server is running on port 8081");
   }
 };
   return (

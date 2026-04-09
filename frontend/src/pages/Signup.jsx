@@ -16,22 +16,27 @@ export default function Signup() {
     e.preventDefault();
     setToast("");
 
+    // Build clean base URL (strip trailing slash)
+    const base = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
+
     try {
-      const res = await fetch(`${API_URL}/register`, {
+      const res = await fetch(`${base}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role }),
       });
 
-      const data = await res.text();
-      if (data.includes("already")) {
-        setToast("⚠️ User already exists!");
-      } else {
-        setToast("✅ Account created! Redirecting...");
-        setTimeout(() => navigate("/login"), 1000);
+      if (!res.ok) {
+        const msg = await res.text();
+        setToast(`❌ ${msg || "Registration failed"}`);
+        return;
       }
+
+      setToast("✅ Account created! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 1200);
+
     } catch (err) {
-      setToast("⚠️ Server error, please try again.");
+      setToast("⚠️ Backend not reachable — make sure the server is running on port 8081");
     }
   };
 

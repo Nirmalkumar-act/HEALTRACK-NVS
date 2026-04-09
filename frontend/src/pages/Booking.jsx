@@ -46,6 +46,8 @@ export default function Booking() {
   const [condition, setCondition] = useState("");
   const [doctor, setDoctor] = useState("");
   const [notes, setNotes] = useState("");
+  const [bookingDate, setBookingDate] = useState("");
+  const [bookingTime, setBookingTime] = useState("");
 
   // Speech recognition
   const [speechText, setSpeechText] = useState("");
@@ -140,8 +142,10 @@ export default function Booking() {
       condition,
       doctor,
       notes,
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
+      bookingDate: bookingDate || new Date().toLocaleDateString(),
+      bookingTime: bookingTime || new Date().toLocaleTimeString(),
+      date: bookingDate || new Date().toLocaleDateString(),
+      time: bookingTime || new Date().toLocaleTimeString(),
     };
 
     try {
@@ -431,6 +435,31 @@ export default function Booking() {
                   />
                 </div>
 
+                {/* 📅 Date & Time Picker */}
+                <div className="grid2">
+                  <div className="input-group">
+                    <span className="input-icon">📅</span>
+                    <input
+                      type="date"
+                      value={bookingDate}
+                      min={new Date().toISOString().split("T")[0]}
+                      onChange={(e) => setBookingDate(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="input-group">
+                    <span className="input-icon">🕐</span>
+                    <select value={bookingTime} onChange={(e) => setBookingTime(e.target.value)} required>
+                      <option value="">Select Time Slot</option>
+                      {["09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM",
+                        "12:00 PM","02:00 PM","02:30 PM","03:00 PM","03:30 PM",
+                        "04:00 PM","04:30 PM","05:00 PM"].map(slot => (
+                        <option key={slot} value={slot}>{slot}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <textarea
                   className="additional-notes"
                   placeholder="Additional Information"
@@ -469,7 +498,10 @@ export default function Booking() {
                   <b>Hospital:</b> {hospital}
                 </p>
                 <p>
-                  <b>Booking Time:</b> {new Date().toLocaleTimeString()}
+                   <b>Booking Time:</b> {bookingTime || new Date().toLocaleTimeString()}
+                </p>
+                <p>
+                   <b>📅 Appointment Date:</b> {bookingDate || new Date().toLocaleDateString()}
                 </p>
                 <hr />
                 <h3>⏳ Live Queue Status</h3>

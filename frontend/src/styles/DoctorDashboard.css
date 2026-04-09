@@ -1,318 +1,306 @@
-/* =============================
-   Doctor Dashboard Styles
-   ============================= */
+/* ── DoctorDashboard.css — Final Clean Version ────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Page Wrapper ─────────────────────────────────────────── */
 .doctor-dashboard {
-  padding: 40px 20px;
   max-width: 1200px;
-  margin: auto;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  color: #2c3e50;
-  animation: fadeIn 0.6s ease-in-out;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #1a1f35;
+  animation: fadeIn 0.5s ease;
 }
 
-.doctor-dashboard h1 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #0077b6;
-  animation: slideDown 0.6s ease;
+/* ── Title ────────────────────────────────────────────────── */
+.doctor-dashboard > h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #1558b0;
+  margin: 0 0 4px;
+  animation: slideDown 0.5s ease;
 }
 
+/* ── Clock — plain text, no box ───────────────────────────── */
 .clock {
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 1.1rem;
+  font-size: 0.88rem;
+  color: #888;
   font-weight: 500;
-  color: #444;
+  margin: 0 0 24px;
 }
 
-/* =============================
-   Doctors Availability
-   ============================= */
+/* ── Doctor Availability ──────────────────────────────────── */
 .doctor-availability {
-  margin-bottom: 30px;
-  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid #e8edf7;
 }
-
 .doctor-availability h2 {
-  color: #0077b6;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1558b0;
+  margin: 0 0 12px;
 }
-
 .doctor-item {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 12px;
-  margin: 6px 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #f8faff;
+  border: 1px solid #e8edf7;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
-
-.doctor-item span {
+.doctor-item:last-child { margin-bottom: 0; }
+.doctor-item > span {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  flex: 1;
   min-width: 120px;
 }
 
-/* Buttons */
-.doctor-item .btn {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.doctor-item .btn.primary {
-  background-color: #0077b6;
-  color: white;
-}
-
-.doctor-item .btn.primary:hover:not(:disabled) {
-  background-color: #0093d0;
-  transform: translateY(-2px);
-}
-
-.doctor-item .btn.danger {
-  background-color: #e63946;
-  color: white;
-}
-
-.doctor-item .btn.danger:hover:not(:disabled) {
-  background-color: #f04c5a;
-  transform: translateY(-2px);
-}
-
-.doctor-item .btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* =============================
-   Summary Cards
-   ============================= */
+/* ── Summary Cards ────────────────────────────────────────── */
 .doctor-summary {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
 }
-
 .doctor-card {
-  background: linear-gradient(135deg, #0077b6, #00b4d8);
-  color: white;
-  padding: 20px 26px;
+  background: #fff;
   border-radius: 14px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  padding: 20px 16px;
   text-align: center;
-  min-width: 180px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-top: 3px solid #0077b6;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.doctor-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 8px 18px rgba(0,0,0,0.2);
-}
+.doctor-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.1); }
 .doctor-card h3 {
-  margin: 0 0 8px;
-  font-size: 1.2rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
 }
-.doctor-card p {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: bold;
-}
-
-/* =============================
-   Doctor Visits
-   ============================= */
-.doctor-visits {
-  margin-bottom: 30px;
-  text-align: center;
-}
-.doctor-visits h2 {
+.doctor-card > p {
+  font-size: 2rem;
+  font-weight: 800;
   color: #0077b6;
-  margin-bottom: 12px;
-}
-.doctor-visits ul {
-  list-style: none;
-  padding: 0;
-}
-.doctor-visits li {
-  margin: 6px 0;
-  font-size: 1rem;
-  color: #333;
+  margin: 0;
 }
 
-/* =============================
-   Search + Filter
-   ============================= */
+/* ── Search + Filter ──────────────────────────────────────── */
 .search-filter {
   display: flex;
-  gap: 15px;
-  justify-content: center;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 .search-filter input,
 .search-filter select {
+  flex: 1;
+  min-width: 160px;
   padding: 10px 14px;
   border-radius: 10px;
-  border: 2px solid #ddd;
+  border: 1.5px solid #e0e5f0;
+  font-size: 0.92rem;
   outline: none;
-  font-size: 1rem;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  color: #1a1f35;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: 'Inter', sans-serif;
 }
 .search-filter input:focus,
 .search-filter select:focus {
   border-color: #0077b6;
-  box-shadow: 0px 4px 12px rgba(0,119,182,0.25);
+  box-shadow: 0 0 0 3px rgba(0,119,182,0.1);
 }
 
-/* =============================
-   Patients Table
-   ============================= */
+/* ── Table ────────────────────────────────────────────────── */
 .doctor-dashboard table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 16px rgba(0,0,0,0.07);
+  border: 1px solid rgba(0,0,0,0.04);
 }
-
 .doctor-dashboard thead {
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+}
+.doctor-dashboard thead th {
+  padding: 13px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-align: left;
+  color: rgba(255,255,255,0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+.doctor-dashboard tbody td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #f0f3f8;
+  font-size: 0.88rem;
+  color: #333;
+}
+.doctor-dashboard tbody tr:last-child td { border-bottom: none; }
+.doctor-dashboard tbody tr:hover td { background: #f7fbff; }
+.active-row td { background: #e8f5ff !important; font-weight: 600; }
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.status-waiting   { background: #fff3e0; color: #e67e22; border: 1px solid #ffd08a; }
+.status-consult   { background: #e3f2fd; color: #0077b6; border: 1px solid #90caf9; }
+.status-done      { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.status-cancelled { background: #fce4ec; color: #c62828; border: 1px solid #f48fb1; }
+
+/* Gender */
+.gender.male   { color: #0077b6; font-weight: 600; }
+.gender.female { color: #e91e63; font-weight: 600; }
+.gender.other  { color: #9c27b0; font-weight: 600; }
+td.not-available { color: #e63946; font-weight: 600; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.doctor-dashboard .btn,
+.btn {
+  padding: 9px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.doctor-dashboard .btn.primary,
+.btn.primary {
   background: linear-gradient(135deg, #0077b6, #00b4d8);
   color: #fff;
 }
-.doctor-dashboard thead th {
-  padding: 14px;
+.doctor-dashboard .btn.primary:hover:not(:disabled),
+.btn.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,119,182,0.3);
+}
+.doctor-dashboard .btn.danger,
+.btn.danger  { background: linear-gradient(135deg, #e63946, #c0392b); color: #fff; }
+.doctor-dashboard .btn.danger:hover:not(:disabled),
+.btn.danger:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231,57,70,0.3);
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+/* ── Reviews Panel — dark card (inline styles from JSX use dark colors) ── */
+.reviews-panel {
+  background: linear-gradient(135deg, #1a1f35, #16213e);
+  border-radius: 16px;
+  padding: 24px 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-top: 24px;
+}
+.reviews-panel h2 {
   font-size: 1rem;
-  text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  color: #56ccf2;
+  margin: 0 0 16px;
+}
+/* Fix review panel form input styling */
+.reviews-panel input {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  padding: 10px 16px !important;
+  font-size: 0.9rem !important;
+  outline: none !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.reviews-panel input::placeholder { color: rgba(255,255,255,0.35) !important; }
+.reviews-panel input:focus { border-color: #56ccf2 !important; }
+/* Fix star color for dark panel */
+.reviews-panel span[style] { 
+  font-size: 1rem;
 }
 
-.doctor-dashboard tbody td {
-  padding: 14px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
-  color: #333;
-}
-.doctor-dashboard tbody tr:hover {
-  background: #f9f9f9;
-  transition: background 0.3s ease;
-}
-
-/* Highlight Active Patient */
-.active-row {
-  background: #e6f7ff !important;
-}
-.active-row td {
-  font-weight: 600;
-  color: #0077b6;
-}
-
-/* Gender colors */
-.gender.male { color: #0077b6; font-weight: 600; }
-.gender.female { color: #e91e63; font-weight: 600; }
-.gender.other { color: #9c27b0; font-weight: 600; }
-
-/* Highlight Not Available Doctor */
-td.not-available {
-  color: #e63946;
-  font-weight: 600;
-  background: #ffe6e6;
-  border-radius: 6px;
-}
-
-/* Popup notification */
+/* ── Popup ────────────────────────────────────────────────── */
 .popup {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   right: 20px;
-  background: #0077b6;
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
   color: #fff;
-  padding: 14px 20px;
-  border-radius: 10px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  padding: 13px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,119,182,0.3);
   animation: fadeInOut 4s forwards;
   z-index: 1000;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-/* =============================
-   Responsive
-   ============================= */
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeIn    { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideDown { from { opacity:0; transform:translateY(-12px);} to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInOut {
+  0%  { opacity:0; transform:translateY(20px); }
+  12% { opacity:1; transform:translateY(0); }
+  88% { opacity:1; }
+  100%{ opacity:0; transform:translateY(20px); }
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .doctor-summary { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}
 @media (max-width: 768px) {
-  .doctor-dashboard table,
-  .doctor-dashboard thead,
-  .doctor-dashboard tbody,
-  .doctor-dashboard th,
-  .doctor-dashboard td,
-  .doctor-dashboard tr {
-    display: block;
-    width: 100%;
-  }
-
-  .doctor-dashboard thead {
-    display: none;
-  }
-
+  .doctor-dashboard { padding: 20px 14px 40px; }
+  .doctor-dashboard > h1 { font-size: 1.4rem; }
+  .doctor-dashboard table, .doctor-dashboard thead,
+  .doctor-dashboard tbody, .doctor-dashboard th,
+  .doctor-dashboard td, .doctor-dashboard tr { display: block; width: 100%; }
+  .doctor-dashboard thead { display: none; }
   .doctor-dashboard tbody tr {
-    margin-bottom: 15px;
     background: #fff;
     border-radius: 12px;
     padding: 12px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
-
   .doctor-dashboard tbody td {
     border: none;
     display: flex;
     justify-content: space-between;
-    padding: 8px 10px;
-    font-size: 0.95rem;
+    align-items: center;
+    padding: 7px 10px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid #f5f5f5;
   }
-
+  .doctor-dashboard tbody td:last-child { border-bottom: none; }
   .doctor-dashboard tbody td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #0077b6;
+    flex-shrink: 0;
+    margin-right: 10px;
+    font-size: 0.82rem;
   }
-}
-
-/* =============================
-   Animations
-   ============================= */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(20px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(20px); }
+  .reviews-panel { padding: 20px 16px; }
 }

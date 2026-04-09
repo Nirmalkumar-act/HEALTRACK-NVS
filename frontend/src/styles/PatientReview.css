@@ -1,44 +1,228 @@
+/* PatientReview.css — Enhanced with ratings, stats panel */
 .review-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  padding: 40px 16px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
-.review-list {
-  display: grid;
-  gap: 15px;
+.review-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(90deg, #f7971e, #ffd200);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 36px;
+}
+
+/* Sections */
+.review-form-section,
+.stats-section {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+
+.review-form-section h3,
+.stats-section h3 {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
   margin-bottom: 20px;
+  font-weight: 600;
 }
 
-.review-card {
-  background: #f7f9fc;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+.review-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
-.review-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+@media (max-width: 560px) { .review-row { grid-template-columns: 1fr; } }
 
 .review-form input,
 .review-form textarea,
-.review-form select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.stats-search input {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.25s;
+  box-sizing: border-box;
+  font-family: inherit;
 }
 
-.review-form button {
-  background: #0077ff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
+.review-form input::placeholder,
+.review-form textarea::placeholder,
+.stats-search input::placeholder { color: rgba(255,255,255,0.3); }
+
+.review-form input:focus,
+.review-form textarea:focus,
+.stats-search input:focus { border-color: #f7971e; }
+
+.review-form textarea { margin-bottom: 16px; resize: vertical; }
+
+/* Star Picker */
+.star-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
 }
-.review-form button:hover {
-  background: #005ecb;
+
+.star-pick {
+  font-size: 2rem;
+  cursor: pointer;
+  color: rgba(255,255,255,0.2);
+  transition: color 0.15s, transform 0.15s;
+  user-select: none;
+}
+
+.star-pick.active { color: #f7971e; }
+.star-pick:hover  { transform: scale(1.2); }
+
+.star-label {
+  font-size: 0.85rem;
+  color: #f7971e;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+/* Feedback messages */
+.review-error   { color: #e96c6c; font-size: 0.88rem; margin-bottom: 10px; }
+.review-success { color: #43e97b; font-size: 0.88rem; margin-bottom: 10px; }
+.review-loading { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-top: 12px; }
+
+/* Submit button */
+.review-submit {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  border: none;
+  border-radius: 10px;
+  color: #1a1a2e;
+  font-weight: 700;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.review-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(247,151,30,0.45);
+}
+
+.review-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Stats Search */
+.stats-search {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stats-search button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s;
+}
+
+.stats-search button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(247,151,30,0.4);
+}
+
+/* Doctor Stats Card */
+.doctor-stats-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.stats-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.stats-top h4 {
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+  color: #f7971e;
+}
+
+.stats-top p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.avg-rating { text-align: center; }
+
+.avg-number {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffd200;
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+/* Review Cards Loop */
+.reviews-list { display: flex; flex-direction: column; gap: 14px; }
+
+.review-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: border-color 0.2s;
+}
+
+.review-card:hover { border-color: rgba(247,151,30,0.35); }
+
+.review-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-card-top h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.9);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.review-comment {
+  margin: 10px 0 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
 }

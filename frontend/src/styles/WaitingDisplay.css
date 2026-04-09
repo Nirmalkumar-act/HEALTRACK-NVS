@@ -1,261 +1,239 @@
-/* =============================
-   Waiting Room Display Styles
-   ============================= */
+/* ── WaitingDisplay.css ──────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Page Wrapper ────────────────────────────────────────── */
 .waiting-display {
-  padding: 40px 20px;
   max-width: 1100px;
-  margin: auto;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  color: #2c3e50;
-  text-align: center;
-  animation: fadeIn 0.6s ease-in-out;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #1a1f35;
+  animation: fadeIn 0.5s ease;
 }
 
+/* ── Title (centered) ────────────────────────────────────── */
 .waiting-display h1 {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
+  font-weight: 800;
   color: #0077b6;
-  margin-bottom: 10px;
-  animation: slideDown 0.6s ease;
+  text-align: center;
+  margin: 0 0 6px;
+  animation: slideDown 0.5s ease;
 }
 
+/* ── Clock — plain text ONLY, no box/background ─────────── */
 .clock {
-  font-size: 1.1rem;
-  margin-bottom: 25px;
-  color: #444;
+  text-align: center;
+  font-size: 0.92rem;
+  color: #777;
+  font-weight: 500;
+  margin: 0 0 4px;
 }
 
+/* ── Waiting Count ───────────────────────────────────────── */
+.waiting-count {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0077b6;
+  margin: 0 0 20px;
+}
+
+/* ── Empty State ─────────────────────────────────────────── */
 .empty {
-  font-size: 1.2rem;
-  color: #666;
-  margin-top: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #888;
+  margin: 32px 0 0;
 }
 
-/* =============================
-   Now Serving Card
-   ============================= */
+/* ── Now Serving Card ────────────────────────────────────── */
 .now-serving-card {
   background: linear-gradient(135deg, #0077b6, #00b4d8);
-  color: white;
-  padding: 20px;
-  margin-bottom: 30px;
-  border-radius: 14px;
-  box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
-  text-align: left;
-  animation: fadeIn 0.5s ease-in-out;
+  color: #fff;
+  padding: 22px 28px;
+  margin-bottom: 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,119,182,0.25);
+  animation: fadeIn 0.5s ease;
 }
 .now-serving-card h2 {
-  margin-bottom: 12px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 12px;
 }
 .now-serving-card p {
-  margin: 6px 0;
-  font-size: 1rem;
+  margin: 5px 0;
+  font-size: 0.95rem;
+  opacity: 0.92;
 }
 .now-serving-card .btn {
-  margin-top: 15px;
+  margin-top: 14px;
 }
 
-/* =============================
-   Table Styles
-   ============================= */
+/* ── Queue Filters ───────────────────────────────────────── */
+.queue-filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 16px;
+  flex-wrap: wrap;
+}
+.queue-filters input,
+.queue-filters select {
+  padding: 9px 13px;
+  border-radius: 9px;
+  border: 1.5px solid #dde3f0;
+  font-size: 0.92rem;
+  outline: none;
+  background: #fff;
+  color: #1a1f35;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+}
+.queue-filters input:focus,
+.queue-filters select:focus { border-color: #0077b6; }
+
+/* ── Table ───────────────────────────────────────────────── */
 .waiting-display table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
-  margin-bottom: 25px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
 }
 .waiting-display thead {
   background: linear-gradient(135deg, #0077b6, #00b4d8);
   color: #fff;
 }
 .waiting-display thead th {
-  padding: 14px;
+  padding: 13px 14px;
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.82rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 .waiting-display tbody td {
-  padding: 14px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f3f8;
+  font-size: 0.9rem;
+  color: #333;
+  text-align: center;
 }
-.waiting-display tbody tr:hover {
-  background: #f9f9f9;
-}
-
+.waiting-display tbody tr:last-child td { border-bottom: none; }
+.waiting-display tbody tr:hover td { background: #f5fbff; }
 .active-row {
   background: #e6f7ff !important;
   font-weight: 600;
 }
+.active-row td { color: #0077b6; }
 
-/* Status Badges */
+/* ── Status Badges ───────────────────────────────────────── */
 .status {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: bold;
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
-.status.active {
-  background: #00b894;
-  color: white;
-}
-.status.waiting {
-  background: #ffeaa7;
-  color: #333;
-}
+.status.active  { background: #e8f5e9; color: #2e7d32; }
+.status.waiting { background: #fff3e0; color: #e65100; }
 
-/* =============================
-   Controls
-   ============================= */
-.queue-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+/* ── Gender ──────────────────────────────────────────────── */
+.gender.male   { color: #0077b6; font-weight: 600; }
+.gender.female { color: #e91e63; font-weight: 600; }
+.gender.other  { color: #9c27b0; font-weight: 600; }
+td.not-available { color: #e63946; font-weight: 600; background: #ffeef0; border-radius: 6px; }
+
+/* ── Buttons ─────────────────────────────────────────────── */
 .btn {
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  transition: all 0.3s ease;
-}
-.btn.primary {
-  background: #0077b6;
-  color: white;
-}
-.btn.primary:hover {
-  background: #005f87;
-}
-.btn.danger {
-  background: #e74c3c;
-  color: white;
-}
-.btn.danger:hover {
-  background: #c0392b;
-}
-.waiting-count {
-  text-align: center;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 10px;
-  color: #0077b6;
+  border: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
 }
+.btn.primary { background: linear-gradient(135deg, #0077b6, #00b4d8); color: #fff; }
+.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,119,182,0.3); }
+.btn.danger  { background: linear-gradient(135deg, #e63946, #c0392b); color: #fff; }
+.btn.danger:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(231,57,70,0.3); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
-.queue-filters {
+/* ── Queue Controls ──────────────────────────────────────── */
+.queue-controls {
   display: flex;
   justify-content: center;
+  margin-top: 16px;
   gap: 12px;
-  margin: 15px 0;
-}
-.queue-filters input,
-.queue-filters select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1.5px solid #ccc;
-  font-size: 0.95rem;
-}
-.queue-filters input:focus,
-.queue-filters select:focus {
-  border-color: #0077b6;
-  outline: none;
 }
 
+/* ── Popup ───────────────────────────────────────────────── */
 .popup {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   right: 20px;
-  background: #0077b6;
-  color: white;
-  padding: 14px 20px;
-  border-radius: 10px;
-  animation: fadeInOut 4s ease forwards;
-}
-
-/* Gender colors */
-.gender.male { color: #0077b6; font-weight: 600; }
-.gender.female { color: #e91e63; font-weight: 600; }
-.gender.other { color: #9c27b0; font-weight: 600; }
-
-/* Popup notification */
-.popup {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #0077b6;
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
   color: #fff;
-  padding: 14px 20px;
-  border-radius: 10px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  padding: 13px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,119,182,0.3);
   animation: fadeInOut 4s forwards;
   z-index: 1000;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(20px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
+  0%   { opacity: 0; transform: translateY(20px); }
+  12%  { opacity: 1; transform: translateY(0); }
+  88%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(20px); }
 }
 
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(20px); }
-  15% { opacity: 1; transform: translateY(0); }
-  85% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(20px); }
-}
-
-/* =============================
-   Responsive
-   ============================= */
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .waiting-display table,
-  .waiting-display thead,
-  .waiting-display tbody,
-  .waiting-display th,
-  .waiting-display td,
-  .waiting-display tr {
-    display: block;
-    width: 100%;
-  }
-
-  .waiting-display thead {
-    display: none;
-  }
-
+  .waiting-display { padding: 20px 14px 40px; }
+  .waiting-display h1 { font-size: 1.4rem; }
+  .now-serving-card { padding: 18px 20px; }
+  .waiting-display table, .waiting-display thead,
+  .waiting-display tbody, .waiting-display th,
+  .waiting-display td, .waiting-display tr { display: block; width: 100%; }
+  .waiting-display thead { display: none; }
   .waiting-display tbody tr {
-    margin-bottom: 15px;
     background: #fff;
     border-radius: 12px;
     padding: 12px;
-    box-shadow: 0px 3px 8px rgba(0,0,0,0.05);
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
   }
-
   .waiting-display tbody td {
     border: none;
     display: flex;
     justify-content: space-between;
-    padding: 8px 10px;
-    font-size: 0.95rem;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 0.88rem;
   }
-
   .waiting-display tbody td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #0077b6;
+    flex-shrink: 0;
+    margin-right: 10px;
   }
-}
-
-/* =============================
-   Animations
-   ============================= */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
 }

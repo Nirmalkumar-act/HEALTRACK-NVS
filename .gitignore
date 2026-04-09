@@ -1,0 +1,25 @@
+# ── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/settings.json
+*.iml
+
+# ── Frontend (Vite / Node) ────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.production
+
+# ── Backend (Maven / Spring Boot) ────────────────────────────────────────────
+backend/target/
+backend/*.jar
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# ── Secrets — NEVER commit these ─────────────────────────────────────────────
+*.env
+.env

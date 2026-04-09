@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "bookings")
 public class Booking {
 
+    public enum BookingStatus { WAITING, IN_CONSULTATION, DONE, CANCELLED }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +28,10 @@ public class Booking {
 
     @Column(columnDefinition = "TEXT")
     private String notes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private BookingStatus status = BookingStatus.WAITING;
 
     private String bookingDate;
     private String bookingTime;
@@ -70,4 +76,7 @@ public class Booking {
 
     public String getBookingTime() { return bookingTime; }
     public void setBookingTime(String bookingTime) { this.bookingTime = bookingTime; }
+
+    public BookingStatus getStatus() { return status; }
+    public void setStatus(BookingStatus status) { this.status = status; }
 }

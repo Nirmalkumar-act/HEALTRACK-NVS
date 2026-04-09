@@ -1,0 +1,194 @@
+/* PrescriptionForm.css */
+.rx-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.rx-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 700px;
+  color: #fff;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.rx-card h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #56ccf2, #2f80ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rx-card p.subtitle {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.rx-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .rx-grid { grid-template-columns: 1fr; }
+}
+
+.rx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rx-field.full {
+  grid-column: 1 / -1;
+}
+
+.rx-field label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rx-field input,
+.rx-field textarea,
+.rx-field select {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: #fff;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.rx-field input::placeholder,
+.rx-field textarea::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+
+.rx-field input:focus,
+.rx-field textarea:focus,
+.rx-field select:focus {
+  border-color: #56ccf2;
+  background: rgba(86,204,242,0.08);
+}
+
+.rx-field select option { background: #1a2a3a; }
+
+.rx-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  justify-content: flex-end;
+}
+
+.rx-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.rx-btn.primary {
+  background: linear-gradient(135deg, #56ccf2, #2f80ed);
+  color: #fff;
+}
+
+.rx-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(86,204,242,0.4);
+}
+
+.rx-btn.secondary {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.rx-btn.secondary:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.rx-success {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(39, 174, 96, 0.2);
+  border: 1px solid rgba(39,174,96,0.4);
+  border-radius: 12px;
+  color: #6dde9e;
+  font-size: 0.95rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.rx-list {
+  margin-top: 40px;
+}
+
+.rx-list h2 {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 16px;
+}
+
+.rx-history-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.rx-history-card:hover {
+  border-color: rgba(86,204,242,0.4);
+}
+
+.rx-history-card h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: #56ccf2;
+}
+
+.rx-history-card p {
+  margin: 3px 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.rx-tag {
+  display: inline-block;
+  background: rgba(86,204,242,0.15);
+  border: 1px solid rgba(86,204,242,0.3);
+  color: #56ccf2;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  margin-right: 6px;
+  margin-top: 6px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

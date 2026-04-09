@@ -1,14 +1,14 @@
-/* =============================
-   Booking & Scanner Styles
-   ============================= */
+/* ── Booking.css — Premium Multi-Step Booking ───────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 .booking-wrapper,
 .booking-page {
-  padding: 40px 20px;
+  padding: 40px 20px 60px;
   max-width: 1100px;
-  margin: auto;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  color: #2c3e50;
-  background: #f7f9fc;
+  margin: 0 auto;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #1a1f35;
+  background: transparent;
 }
 
 /* =============================
@@ -75,25 +75,18 @@
   margin-bottom: 28px;
 }
 
-/* =============================
-   Card Styles (Glassmorphism)
-   ============================= */
+/* ── Card ────────────────────────────────────────────────── */
 .card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  padding: 30px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-  animation: slideUp 0.7s ease-in-out;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+  border: 1.5px solid rgba(0,0,0,0.05);
+  animation: slideUp 0.5s ease;
+  transition: box-shadow 0.3s;
 }
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.18);
-}
-.card.confirmation {
-  text-align: center;
-}
+.card:hover { box-shadow: 0 16px 44px rgba(0,0,0,0.13); }
+.card.confirmation { text-align: center; }
 
 /* =============================
    Step Titles
@@ -106,43 +99,43 @@
   text-align: center;
 }
 
-/* =============================
-   Scanner & Method Buttons
-   ============================= */
+/* ── Scanner Method Buttons ──────────────────────────────── */
 .scanner-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
   margin-bottom: 28px;
   justify-content: center;
 }
 .scanner-btn {
-  flex: 1 1 180px;
+  flex: 1 1 160px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 14px 12px;
-  border: 2px solid #ddd;
+  padding: 14px 16px;
+  border: 2px solid #e0e5f0;
   border-radius: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  background: #f0f4f8;
-  transition: all 0.3s ease;
-  font-size: 1rem;
+  background: #f8faff;
+  transition: all 0.25s;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  color: #1a1f35;
 }
 .scanner-btn:hover {
-  background: #e6f7ff;
-  transform: translateY(-2px) scale(1.03);
+  background: #eef4ff;
+  border-color: #0077b6;
+  transform: translateY(-2px);
 }
 .scanner-btn.active {
   border-color: #0077b6;
-  background: #d0f0ff;
-  box-shadow: 0 6px 20px rgba(0,119,182,0.3);
+  background: #dbeeff;
+  box-shadow: 0 6px 20px rgba(0,119,182,0.2);
+  color: #0077b6;
 }
-.scanner-icon {
-  font-size: 1.4rem;
-}
+.scanner-icon { font-size: 1.3rem; }
 
 /* =============================
    Input Groups
@@ -202,42 +195,35 @@ textarea.additional-notes:focus {
   margin-bottom: 20px;
 }
 
-/* =============================
-   Buttons
-   ============================= */
+/* ── Buttons ─────────────────────────────────────────────── */
 .btn {
-  padding: 14px 28px;
-  border-radius: 14px;
-  font-size: 1rem;
+  padding: 13px 28px;
+  border-radius: 12px;
+  font-size: 0.97rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: all 0.3s ease;
-  min-width: 150px;
+  transition: all 0.25s;
+  min-width: 140px;
+  font-family: 'Inter', sans-serif;
 }
 .btn.primary {
   background: linear-gradient(135deg, #0077b6, #00b4d8);
   color: #fff;
+  box-shadow: 0 6px 20px rgba(0,119,182,0.3);
 }
 .btn.primary:hover {
-  background: linear-gradient(135deg, #00b4d8, #0077b6);
-  transform: translateY(-2px) scale(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,119,182,0.4);
 }
 .btn.secondary {
-  background: #f4f6f8;
-  color: #333;
+  background: #f0f4f8;
+  color: #444;
+  border: 1.5px solid #dde3f0;
 }
-.btn.secondary:hover {
-  background: #e0e4eb;
-}
-.pulse {
-  animation: pulse 1.6s infinite;
-}
-
-.highlight {
-  border: 2px solid #4caf50 !important;
-  box-shadow: 0 0 10px #4caf50;
-}
+.btn.secondary:hover { background: #e0e8f5; }
+.pulse { animation: pulse 1.6s infinite; }
+.highlight { border: 2px solid #4caf50 !important; box-shadow: 0 0 0 4px rgba(76,175,80,0.15) !important; }
 
 
 /* =============================

@@ -1,0 +1,224 @@
+/* MedicineReminder.css */
+.reminder-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0533, #2d1b69, #11998e);
+  padding: 40px 16px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+.reminder-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.reminder-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reminder-header p {
+  color: rgba(255,255,255,0.5);
+  margin-top: 8px;
+}
+
+.reminder-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.reminder-form-card {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 32px;
+}
+
+.reminder-form-card h2 {
+  font-size: 1.1rem;
+  color: #a18cd1;
+  margin-bottom: 20px;
+}
+
+.reminder-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 560px) {
+  .reminder-grid { grid-template-columns: 1fr; }
+}
+
+.reminder-field label {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+  letter-spacing: 0.4px;
+}
+
+.reminder-field input,
+.reminder-field select {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 10px;
+  color: #fff;
+  padding: 11px 14px;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.25s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.reminder-field input:focus,
+.reminder-field select:focus {
+  border-color: #a18cd1;
+}
+
+.reminder-field select option { background: #2d1b69; }
+.reminder-field input::placeholder { color: rgba(255,255,255,0.3); }
+
+.reminder-add-btn {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+  border: none;
+  border-radius: 10px;
+  color: #1a0533;
+  font-weight: 700;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.reminder-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(161,140,209,0.5);
+}
+
+.notification-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.notification-toggle span {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.toggle-btn {
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.toggle-btn.on  { background: #43e97b; color: #0d1117; }
+.toggle-btn.off { background: rgba(255,255,255,0.15); color: #fff; }
+
+.reminders-list { }
+
+.reminder-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s;
+  animation: fadeUp 0.3s ease;
+}
+
+.reminder-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(161,140,209,0.4);
+}
+
+.reminder-item.active-now {
+  border-color: #43e97b;
+  background: rgba(67,233,123,0.08);
+  box-shadow: 0 0 20px rgba(67,233,123,0.2);
+}
+
+.reminder-info h4 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  color: #fbc2eb;
+}
+
+.reminder-info p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+}
+
+.reminder-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reminder-time {
+  background: rgba(161,140,209,0.15);
+  border: 1px solid rgba(161,140,209,0.3);
+  color: #a18cd1;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.reminder-delete {
+  background: rgba(233,108,108,0.15);
+  border: 1px solid rgba(233,108,108,0.3);
+  color: #e96c6c;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reminder-delete:hover {
+  background: rgba(233,108,108,0.3);
+}
+
+.freq-badge {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+}
+
+.no-reminders {
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+  padding: 50px;
+  font-size: 1rem;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
