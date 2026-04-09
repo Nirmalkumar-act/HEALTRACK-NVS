@@ -1,12 +1,12 @@
 [build]
   base    = "frontend"
   command = "npm run build"
-  publish = "frontend/dist"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
 
-# SPA routing — all paths go to index.html
+# SPA routing — all React routes work on Netlify
 [[redirects]]
   from   = "/*"
   to     = "/index.html"
