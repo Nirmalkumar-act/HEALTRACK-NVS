@@ -11,7 +11,8 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=builder /app/target/hms-backend-0.0.1-SNAPSHOT.jar app.jar
 
-ENV PORT=8081
-EXPOSE $PORT
+# Render injects PORT at runtime (usually 10000)
+ENV PORT=10000
+EXPOSE 10000
 
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=$PORT -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "echo Starting on port $PORT && java -Dserver.port=$PORT -Dserver.address=0.0.0.0 -jar app.jar"]
