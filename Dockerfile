@@ -10,9 +10,31 @@ RUN mvn clean package -DskipTests -q
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=builder /app/target/hms-backend-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /app/src/main/resources/META-INF /app/META-INF
 
-# Render injects PORT at runtime (usually 10000)
 ENV PORT=10000
 EXPOSE 10000
 
-ENTRYPOINT ["sh", "-c", "echo Starting on port $PORT && java -Dserver.port=$PORT -Dserver.address=0.0.0.0 -jar app.jar"]
+# Startup script: converts postgresql:// → jdbc:postgresql://
+# and clears username/password when credentials are embedded in the URL
+ENTRYPOINT ["sh", "-c", "\
+  DB_URL=\"${DATABASE_URL:-}\"; \
+  if [ -n \"$DB_URL\" ]; then \
+    case \"$DB_URL\" in \
+      postgresql://*|postgres://*) DB_URL=\"jdbc:$DB_URL\" ;; \
+    esac; \
+    echo \"=== Production DB detected ===\"; \
+    exec java \
+      -Dserver.port=${PORT:-10000} \
+      -Dserver.address=0.0.0.0 \
+      -Dspring.datasource.url=\"$DB_URL\" \
+      -Dspring.datasource.username= \
+      -Dspring.datasource.password= \
+      -jar app.jar; \
+  else \
+    echo \"=== Local/fallback DB ===\"; \
+    exec java \
+      -Dserver.port=${PORT:-10000} \
+      -Dserver.address=0.0.0.0 \
+      -jar app.jar; \
+  fi"]
