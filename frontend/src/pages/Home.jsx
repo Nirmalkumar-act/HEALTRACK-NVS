@@ -111,6 +111,58 @@ export default function Home() {
         ))}
       </div>
 
+      {/* ── MANAGEMENT / DOCTOR QUICK ACTIONS ── */}
+      {(user?.role === "Management" || user?.role === "Doctor") && (
+        <div className="features-section" style={{ paddingBottom: 0 }}>
+          <h2 className="section-title">
+            {user?.role === "Management" ? "🏥 Management Tools" : "👨‍⚕️ Doctor Tools"}
+          </h2>
+          <p className="section-sub">Quick access to your role-specific features</p>
+          <div className="features-grid">
+            <div className="feature-card" style={{ "--accent": "#6c63ff" }} onClick={() => navigate("/dashboard")}>
+              <div className="fc-icon">👨‍⚕️</div>
+              <h3 className="fc-title">Doctor Dashboard</h3>
+              <p className="fc-desc">View today's patient queue and call next token.</p>
+              <span className="fc-arrow">→</span>
+            </div>
+            <div className="feature-card" style={{ "--accent": "#00b894" }} onClick={() => navigate("/waiting")}>
+              <div className="fc-icon">🕐</div>
+              <h3 className="fc-title">Waiting Room</h3>
+              <p className="fc-desc">Live queue display for the waiting area screen.</p>
+              <span className="fc-arrow">→</span>
+            </div>
+            <div className="feature-card" style={{ "--accent": "#fdcb6e" }} onClick={() => navigate("/prescription")}>
+              <div className="fc-icon">🧾</div>
+              <h3 className="fc-title">Write Prescription</h3>
+              <p className="fc-desc">Create and save digital prescriptions for patients.</p>
+              <span className="fc-arrow">→</span>
+            </div>
+            <div className="feature-card" style={{ "--accent": "#56ccf2" }} onClick={() => navigate("/booking")}>
+              <div className="fc-icon">📑</div>
+              <h3 className="fc-title">Book Appointment</h3>
+              <p className="fc-desc">Register a new patient and generate a token.</p>
+              <span className="fc-arrow">→</span>
+            </div>
+            {user?.role === "Management" && (
+              <>
+                <div className="feature-card" style={{ "--accent": "#e17055" }} onClick={() => navigate("/medwaste")}>
+                  <div className="fc-icon">🧪</div>
+                  <h3 className="fc-title">Med Waste</h3>
+                  <p className="fc-desc">Track and manage medical waste disposal records.</p>
+                  <span className="fc-arrow">→</span>
+                </div>
+                <div className="feature-card" style={{ "--accent": "#a29bfe" }} onClick={() => navigate("/export")}>
+                  <div className="fc-icon">📊</div>
+                  <h3 className="fc-title">Export to Excel</h3>
+                  <p className="fc-desc">Download bookings, prescriptions and user data.</p>
+                  <span className="fc-arrow">→</span>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ── FEATURES GRID ── */}
       <div className="features-section">
         <h2 className="section-title">✨ Everything You Need</h2>
@@ -133,6 +185,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+
 
       {/* ── ABOUT SECTION ── */}
       <div className="about clickable" onClick={() => navigate("/about")}>
