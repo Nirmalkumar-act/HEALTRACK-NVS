@@ -1,6 +1,8 @@
 // src/context/BookingContext.jsx
 import React, { createContext, useContext, useState } from "react";
 
+const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
+
 const BookingContext = createContext();
 
 export function BookingProvider({ children }) {
@@ -19,7 +21,7 @@ export function BookingProvider({ children }) {
       return;
     }
 
-    const res = await fetch("http://localhost:8081/api/bookings", {
+    const res = await fetch(`${API_BASE}/bookings`, {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({

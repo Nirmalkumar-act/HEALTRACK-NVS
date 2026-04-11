@@ -331,11 +331,7 @@ textarea.additional-notes:focus {
   .booking-banner img { height: 180px; }
   .banner-overlay h1 { font-size: 1.8rem; }
   .banner-overlay p { font-size: 1rem; }
-   .scanner-options button:nth-child(1),
-  .scanner-options button:nth-child(2),
-  .scanner-options button:nth-child(3) {
-    display: none !important;
-  }
+  /* All booking method buttons visible on mobile */
 }
 @media (max-width: 480px) {
   .booking-wrapper { padding: 20px 10px; }
