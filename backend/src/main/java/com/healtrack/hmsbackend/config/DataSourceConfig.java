@@ -29,9 +29,20 @@ public class DataSourceConfig {
             // ── Production: Parse Neon/Supabase PostgreSQL URL ─────────────────
             log.info("=== HealTrack: Using production DATABASE_URL ===");
             try {
-                // Neon URL format: postgresql://user:pass@host/db?sslmode=require
+                // Clean the URL — users sometimes paste "psql 'URL'" from Neon docs
+                String cleaned = databaseUrl.trim();
+                // Remove psql '...' wrapper if present
+                if (cleaned.startsWith("psql ")) {
+                    cleaned = cleaned.replaceFirst("^psql\\s+'?", "").replaceAll("'$", "");
+                }
+                // Remove any surrounding quotes
+                cleaned = cleaned.replaceAll("^['\"]|['\"]$", "").trim();
+
+                log.info("=== Cleaned DATABASE_URL scheme: {} ===",
+                    cleaned.contains("://") ? cleaned.substring(0, cleaned.indexOf("://")) : "unknown");
+
                 // Normalize scheme so URI can parse it
-                String normalized = databaseUrl
+                String normalized = cleaned
                         .replace("postgresql://", "http://")
                         .replace("postgres://", "http://");
                 URI uri = URI.create(normalized);
