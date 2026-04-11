@@ -9,6 +9,11 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = (userData) => {
+    // Normalize role to Title Case so "management" == "Management" == "MANAGEMENT"
+    if (userData?.role) {
+      const r = userData.role.trim();
+      userData.role = r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+    }
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };

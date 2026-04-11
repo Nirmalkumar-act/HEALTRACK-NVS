@@ -14,23 +14,12 @@ export default function Booking() {
   const role = user?.role;
 
   // ✅ THEN define methods (after role exists)
- const methods = [
-  // ✅ ONLINE visible for ALL roles
-  { type: "ONLINE", label: "Online Booking", icon: "🌐" },
-
-  // Doctor + Management
-  ...(role === "Doctor" || role === "Management"
-    ? [{ type: "AADHAAR", label: "GET TOKEN", icon: "🆔" }]
-    : []),
-
-  // Management only
-  ...(role === "Management"
-    ? [
-        { type: "QR", label: "QR Code", icon: "📱" },
-        { type: "GANTRADE", label: "Gantrade Card", icon: "💳" },
-      ]
-    : []),
-];
+  const methods = [
+    { type: "ONLINE",   label: "Online Booking", icon: "🌐" },
+    { type: "AADHAAR",  label: "Get Token",       icon: "🆔" },
+    { type: "QR",       label: "QR Code",         icon: "📱" },
+    { type: "GANTRADE", label: "Gantrade Card",   icon: "💳" },
+  ];
 
   const [scanType, setScanType] = useState("");
   const [step, setStep] = useState(1);
