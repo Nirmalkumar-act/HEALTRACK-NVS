@@ -41,7 +41,7 @@ export default function Login() {
     setTimeout(() => navigate("/"), 1000);
 
   } catch (err) {
-    setToast("⚠️ Backend not reachable — make sure the server is running on port 8081");
+    setToast("⚠️ Cannot reach server. Check your connection or try again.");
   }
 };
   return (

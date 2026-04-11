@@ -36,7 +36,7 @@ export default function Signup() {
       setTimeout(() => navigate("/login"), 1200);
 
     } catch (err) {
-      setToast("⚠️ Backend not reachable — make sure the server is running on port 8081");
+      setToast("⚠️ Cannot reach server. Check your connection or try again.");
     }
   };
 
