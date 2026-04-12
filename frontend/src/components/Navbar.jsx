@@ -141,7 +141,6 @@ export default function Navbar() {
             <SubItem icon={<FaCalendarCheck />}   label="Appointment Status"   to="/status"   onClick={closeAll} />
             <SubItem icon={<FaChartLine />}       label="Health Dashboard"     to="/health"   onClick={closeAll} />
             <SubItem icon={"⭐"}                  label="Doctor Reviews"       to="/review"   onClick={closeAll} />
-            <SubItem icon={<FaPrescriptionBottleAlt />} label="My Prescriptions" to="/records" onClick={closeAll} />
           </NavDropdown>
         )}
 
