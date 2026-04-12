@@ -104,22 +104,25 @@ function App() {
               <Route path="/services"      element={<ProtectedRoute><Services /></ProtectedRoute>} />
               <Route path="/chatbot"       element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
               <Route path="/booking"       element={<ProtectedRoute><Booking /></ProtectedRoute>} />
-              <Route path="/scan"          element={<ProtectedRoute><ScanId /></ProtectedRoute>} />
               <Route path="/confirmation"  element={<ProtectedRoute><Confirmation /></ProtectedRoute>} />
               <Route path="/waiting"       element={<ProtectedRoute><WaitingDisplay /></ProtectedRoute>} />
               <Route path="/tracker"       element={<ProtectedRoute><HospitalTracker /></ProtectedRoute>} />
               <Route path="/nearby"        element={<ProtectedRoute><NearbyHospitals /></ProtectedRoute>} />
-              <Route path="/gantrade"      element={<ProtectedRoute><GantradeCard /></ProtectedRoute>} />
-              <Route path="/qrscanner"     element={<ProtectedRoute><QRScanner /></ProtectedRoute>} />
-              <Route path="/mdr-dashboard" element={<ProtectedRoute><MDRDashboard /></ProtectedRoute>} />
-              <Route path="/review"        element={<ProtectedRoute><PatientReview /></ProtectedRoute>} />
+              <Route path="/review"        element={<ProtectedRoute roles={["User","Management"]}><PatientReview /></ProtectedRoute>} />
 
-              {/* Patient Features */}
-              <Route path="/records"    element={<ProtectedRoute><PatientRecords /></ProtectedRoute>} />
-              <Route path="/vitals"     element={<ProtectedRoute><VitalsTracker /></ProtectedRoute>} />
-              <Route path="/reminder"   element={<ProtectedRoute><MedicineReminder /></ProtectedRoute>} />
-              <Route path="/health"     element={<ProtectedRoute><HealthDashboard /></ProtectedRoute>} />
-              <Route path="/status"     element={<ProtectedRoute><AppointmentStatus /></ProtectedRoute>} />
+              {/* Management only — QR, Scan ID, Gantrade */}
+              <Route path="/scan"          element={<ProtectedRoute roles={["Management"]}><ScanId /></ProtectedRoute>} />
+              <Route path="/gantrade"      element={<ProtectedRoute roles={["Management"]}><GantradeCard /></ProtectedRoute>} />
+              <Route path="/qrscanner"     element={<ProtectedRoute roles={["Management"]}><QRScanner /></ProtectedRoute>} />
+              {/* MDR — User + Management */}
+              <Route path="/mdr-dashboard" element={<ProtectedRoute roles={["User","Management"]}><MDRDashboard /></ProtectedRoute>} />
+
+              {/* Patient Features — User + Management only (NOT Doctor) */}
+              <Route path="/records"  element={<ProtectedRoute roles={["User","Management"]}><PatientRecords /></ProtectedRoute>} />
+              <Route path="/vitals"   element={<ProtectedRoute roles={["User","Management"]}><VitalsTracker /></ProtectedRoute>} />
+              <Route path="/reminder" element={<ProtectedRoute roles={["User","Management"]}><MedicineReminder /></ProtectedRoute>} />
+              <Route path="/health"   element={<ProtectedRoute roles={["User","Management"]}><HealthDashboard /></ProtectedRoute>} />
+              <Route path="/status"   element={<ProtectedRoute roles={["User","Management"]}><AppointmentStatus /></ProtectedRoute>} />
 
               {/* Doctor / Management */}
               <Route path="/dashboard"

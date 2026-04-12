@@ -127,21 +127,23 @@ export default function Navbar() {
           </NavLink>
         </li>
 
-        {/* ── 🏥 Patient Dropdown ──────────────────────────── */}
-        <NavDropdown
-          label="Patient"
-          icon="🏥"
-          isOpen={patientOpen}
-          onToggle={toggle(setPatientOpen, setExploreOpen, setDoctorOpen, setProfileOpen)}
-        >
-          <SubItem icon={<FaFileMedical />}     label="Medical Records"      to="/records"  onClick={closeAll} />
-          <SubItem icon={<FaHeartbeat />}       label="Vitals Tracker"       to="/vitals"   onClick={closeAll} />
-          <SubItem icon={<FaBell />}            label="Medicine Reminders"   to="/reminder" onClick={closeAll} />
-          <SubItem icon={<FaCalendarCheck />}   label="Appointment Status"   to="/status"   onClick={closeAll} />
-          <SubItem icon={<FaChartLine />}       label="Health Dashboard"     to="/health"   onClick={closeAll} />
-          <SubItem icon={"⭐"}                  label="Doctor Reviews"       to="/review"   onClick={closeAll} />
-          <SubItem icon={<FaPrescriptionBottleAlt />} label="My Prescriptions" to="/records" onClick={closeAll} />
-        </NavDropdown>
+        {/* ── 🏥 Patient Dropdown (User + Management only — NOT Doctor) ── */}
+        {role !== "Doctor" && (
+          <NavDropdown
+            label="Patient"
+            icon="🏥"
+            isOpen={patientOpen}
+            onToggle={toggle(setPatientOpen, setExploreOpen, setDoctorOpen, setProfileOpen)}
+          >
+            <SubItem icon={<FaFileMedical />}     label="Medical Records"      to="/records"  onClick={closeAll} />
+            <SubItem icon={<FaHeartbeat />}       label="Vitals Tracker"       to="/vitals"   onClick={closeAll} />
+            <SubItem icon={<FaBell />}            label="Medicine Reminders"   to="/reminder" onClick={closeAll} />
+            <SubItem icon={<FaCalendarCheck />}   label="Appointment Status"   to="/status"   onClick={closeAll} />
+            <SubItem icon={<FaChartLine />}       label="Health Dashboard"     to="/health"   onClick={closeAll} />
+            <SubItem icon={"⭐"}                  label="Doctor Reviews"       to="/review"   onClick={closeAll} />
+            <SubItem icon={<FaPrescriptionBottleAlt />} label="My Prescriptions" to="/records" onClick={closeAll} />
+          </NavDropdown>
+        )}
 
         {/* ── 🔍 Explore Dropdown ──────────────────────────── */}
         <NavDropdown
@@ -150,16 +152,22 @@ export default function Navbar() {
           isOpen={exploreOpen}
           onToggle={toggle(setExploreOpen, setPatientOpen, setDoctorOpen, setProfileOpen)}
         >
+          {/* All roles */}
           <SubItem icon={<FaHospital />}        label="Hospital Tracker"     to="/tracker"      onClick={closeAll} />
           <SubItem icon={<FaMapMarkerAlt />}    label="Nearby Hospitals"     to="/nearby"       onClick={closeAll} />
           <SubItem icon={<FaAmbulance />}       label="Emergency"            to="/emergency"    onClick={closeAll} />
           <SubItem icon={<FaSearch />}          label="Services"             to="/services"     onClick={closeAll} />
           <SubItem icon={<FaRobot />}           label="AI Chatbot"           to="/chatbot"      onClick={closeAll} />
-          <SubItem icon={<FaQrcode />}          label="QR Scanner"           to="/qrscanner"    onClick={closeAll} />
-          <SubItem icon={"🪪"}                  label="Scan Patient ID"      to="/scan"         onClick={closeAll} />
-          <SubItem icon={"🧬"}                  label="MDR Dashboard"        to="/mdr-dashboard" onClick={closeAll} />
-          <SubItem icon={"🪙"}                  label="Gantrade Card"        to="/gantrade"     onClick={closeAll} />
+          <SubItem icon={"🧬"}              label="MDR Dashboard"        to="/mdr-dashboard" onClick={closeAll} />
           <SubItem icon={"ℹ️"}                  label="About"                to="/about"        onClick={closeAll} />
+          {/* Management only */}
+          {role === "Management" && (
+            <>
+              <SubItem icon={<FaQrcode />}      label="QR Scanner"           to="/qrscanner"    onClick={closeAll} />
+              <SubItem icon={"🪪"}              label="Scan Patient ID"      to="/scan"         onClick={closeAll} />
+              <SubItem icon={"🪙"}              label="Gantrade Card"        to="/gantrade"     onClick={closeAll} />
+            </>
+          )}
         </NavDropdown>
 
         {/* ── 👨‍⚕️ Doctor Dropdown (Doctor / Management only) ── */}
