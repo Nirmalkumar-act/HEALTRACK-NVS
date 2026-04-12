@@ -2,6 +2,7 @@ package com.healtrack.hmsbackend.service;
 
 import com.healtrack.hmsbackend.model.Booking;
 import com.healtrack.hmsbackend.repository.BookingRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Optional<Booking> updateStatus(Long id, Booking.BookingStatus status) {
+    public Optional<Booking> updateStatus(@NonNull Long id, Booking.BookingStatus status) {
         return repository.findById(id).map(booking -> {
             booking.setStatus(status);
             return repository.save(booking);
