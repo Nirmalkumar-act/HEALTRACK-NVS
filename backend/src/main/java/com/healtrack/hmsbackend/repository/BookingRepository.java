@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByBookingDate(String bookingDate);
+    List<Booking> findByNameIgnoreCase(String name);
+    List<Booking> findByPhone(String phone);
+    List<Booking> findByNameIgnoreCaseAndPhone(String name, String phone);
 }

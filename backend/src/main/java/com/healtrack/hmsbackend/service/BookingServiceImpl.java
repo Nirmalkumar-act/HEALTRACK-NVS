@@ -43,4 +43,16 @@ public class BookingServiceImpl implements BookingService {
             return repository.save(booking);
         });
     }
+
+    @Override
+    public List<Booking> getPatientHistory(String name, String phone) {
+        if (name != null && !name.isBlank() && phone != null && !phone.isBlank()) {
+            return repository.findByNameIgnoreCaseAndPhone(name, phone);
+        } else if (name != null && !name.isBlank()) {
+            return repository.findByNameIgnoreCase(name);
+        } else if (phone != null && !phone.isBlank()) {
+            return repository.findByPhone(phone);
+        }
+        return List.of();
+    }
 }

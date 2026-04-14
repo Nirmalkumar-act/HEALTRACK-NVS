@@ -39,15 +39,15 @@ function SubItem({ icon, label, to, onClick }) {
 /* ─── Main Navbar ─────────────────────────────────────────────────────────── */
 export default function Navbar() {
   const { user, logout, isLoggedIn } = useContext(AuthContext);
-  const [scrolled,     setScrolled]     = useState(false);
-  const [menuOpen,     setMenuOpen]     = useState(false);
-  const [profileOpen,  setProfileOpen]  = useState(false);
-  const [patientOpen,  setPatientOpen]  = useState(false);
-  const [exploreOpen,  setExploreOpen]  = useState(false);
-  const [doctorOpen,   setDoctorOpen]   = useState(false);
-  const navigate    = useNavigate();
-  const role        = user?.role;
-  const navRef      = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [patientOpen, setPatientOpen] = useState(false);
+  const [exploreOpen, setExploreOpen] = useState(false);
+  const [doctorOpen, setDoctorOpen] = useState(false);
+  const navigate = useNavigate();
+  const role = user?.role;
+  const navRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -135,12 +135,12 @@ export default function Navbar() {
             isOpen={patientOpen}
             onToggle={toggle(setPatientOpen, setExploreOpen, setDoctorOpen, setProfileOpen)}
           >
-            <SubItem icon={<FaFileMedical />}     label="Medical Records"      to="/records"  onClick={closeAll} />
-            <SubItem icon={<FaHeartbeat />}       label="Vitals Tracker"       to="/vitals"   onClick={closeAll} />
-            <SubItem icon={<FaBell />}            label="Medicine Reminders"   to="/reminder" onClick={closeAll} />
-            <SubItem icon={<FaCalendarCheck />}   label="Appointment Status"   to="/status"   onClick={closeAll} />
-            <SubItem icon={<FaChartLine />}       label="Health Dashboard"     to="/health"   onClick={closeAll} />
-            <SubItem icon={"⭐"}                  label="Doctor Reviews"       to="/review"   onClick={closeAll} />
+            <SubItem icon={<FaFileMedical />} label="Medical Records" to="/records" onClick={closeAll} />
+            <SubItem icon={<FaHeartbeat />} label="Vitals Tracker" to="/vitals" onClick={closeAll} />
+            <SubItem icon={<FaBell />} label="Medicine Reminders" to="/reminder" onClick={closeAll} />
+            <SubItem icon={<FaCalendarCheck />} label="Appointment Status" to="/status" onClick={closeAll} />
+            <SubItem icon={<FaChartLine />} label="Health Dashboard" to="/health" onClick={closeAll} />
+            <SubItem icon={"⭐"} label="Doctor Reviews" to="/review" onClick={closeAll} />
           </NavDropdown>
         )}
 
@@ -152,19 +152,19 @@ export default function Navbar() {
           onToggle={toggle(setExploreOpen, setPatientOpen, setDoctorOpen, setProfileOpen)}
         >
           {/* All roles */}
-          <SubItem icon={<FaHospital />}        label="Hospital Tracker"     to="/tracker"      onClick={closeAll} />
-          <SubItem icon={<FaMapMarkerAlt />}    label="Nearby Hospitals"     to="/nearby"       onClick={closeAll} />
-          <SubItem icon={<FaAmbulance />}       label="Emergency"            to="/emergency"    onClick={closeAll} />
-          <SubItem icon={<FaSearch />}          label="Services"             to="/services"     onClick={closeAll} />
-          <SubItem icon={<FaRobot />}           label="AI Chatbot"           to="/chatbot"      onClick={closeAll} />
-          <SubItem icon={"🧬"}              label="MDR Dashboard"        to="/mdr-dashboard" onClick={closeAll} />
-          <SubItem icon={"ℹ️"}                  label="About"                to="/about"        onClick={closeAll} />
+          <SubItem icon={<FaHospital />} label="Hospital Tracker" to="/tracker" onClick={closeAll} />
+          <SubItem icon={<FaMapMarkerAlt />} label="Nearby Hospitals" to="/nearby" onClick={closeAll} />
+          <SubItem icon={<FaAmbulance />} label="Emergency" to="/emergency" onClick={closeAll} />
+          <SubItem icon={<FaSearch />} label="Services" to="/services" onClick={closeAll} />
+          <SubItem icon={<FaRobot />} label="AI Chatbot" to="/chatbot" onClick={closeAll} />
+          <SubItem icon={"🧬"} label="MDR Dashboard" to="/mdr-dashboard" onClick={closeAll} />
+          <SubItem icon={"ℹ️"} label="About" to="/about" onClick={closeAll} />
           {/* Management only */}
           {role === "Management" && (
             <>
-              <SubItem icon={<FaQrcode />}      label="QR Scanner"           to="/qrscanner"    onClick={closeAll} />
-              <SubItem icon={"🪪"}              label="Scan Patient ID"      to="/scan"         onClick={closeAll} />
-              <SubItem icon={"🪙"}              label="Gantrade Card"        to="/gantrade"     onClick={closeAll} />
+              <SubItem icon={<FaQrcode />} label="QR Scanner" to="/qrscanner" onClick={closeAll} />
+              <SubItem icon={"🪪"} label="Scan Patient ID" to="/scan" onClick={closeAll} />
+              <SubItem icon={"🪙"} label="Gantrade Card" to="/gantrade" onClick={closeAll} />
             </>
           )}
         </NavDropdown>
@@ -177,12 +177,12 @@ export default function Navbar() {
             isOpen={doctorOpen}
             onToggle={toggle(setDoctorOpen, setPatientOpen, setExploreOpen, setProfileOpen)}
           >
-            <SubItem icon={<FaUserMd />}              label="Dashboard"          to="/dashboard"    onClick={closeAll} />
+            <SubItem icon={<FaUserMd />} label="Dashboard" to="/dashboard" onClick={closeAll} />
             <SubItem icon={<FaPrescriptionBottleAlt />} label="Write Prescription" to="/prescription" onClick={closeAll} />
             {role === "Management" && (
               <>
-                <SubItem icon={"🧪"}  label="Med Waste"      to="/medwaste" onClick={closeAll} />
-                <SubItem icon={"📊"}  label="Export to Excel" to="/export"   onClick={closeAll} />
+                <SubItem icon={"🧪"} label="Med Waste" to="/medwaste" onClick={closeAll} />
+                <SubItem icon={"📊"} label="Export to Excel" to="/export" onClick={closeAll} />
               </>
             )}
           </NavDropdown>

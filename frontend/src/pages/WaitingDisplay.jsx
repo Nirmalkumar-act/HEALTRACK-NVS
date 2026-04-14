@@ -3,8 +3,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useBooking } from "../context/BookingContext";
 import "../styles/WaitingDisplay.css";
 
-const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
-
 export default function WaitingDisplay() {
   const { bookings, setBookings, nextPatient, clearQueue, doctors } = useBooking();
   const [time,  setTime]  = useState(new Date());
@@ -21,7 +19,7 @@ export default function WaitingDisplay() {
   // Load only TODAY's ACTIVE bookings from backend (exclude DONE + CANCELLED)
   const todayISO = new Date().toISOString().slice(0, 10);
   useEffect(() => {
-    fetch(`${API_BASE}/bookings?date=${todayISO}`)
+    fetch(`http://localhost:8081/api/bookings?date=${todayISO}`)
       .then(r => r.ok ? r.json() : [])
       .then(data => {
         if (Array.isArray(data)) {
@@ -58,7 +56,7 @@ export default function WaitingDisplay() {
 
     // 2. Mark DONE in backend so it won't come back on re-fetch
     if (current.id) {
-      fetch(`${API_BASE}/bookings/${current.id}/status`, {
+      fetch(`http://localhost:8081/api/bookings/${current.id}/status`, {
         method:  "PATCH",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({ status: "DONE" }),

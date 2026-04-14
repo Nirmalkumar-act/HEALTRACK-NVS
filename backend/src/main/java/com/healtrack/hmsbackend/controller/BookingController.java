@@ -34,6 +34,14 @@ public class BookingController {
         return service.getAllBookings();
     }
 
+    // 🔹 Get patient history
+    @GetMapping("/history")
+    public List<Booking> getHistory(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone) {
+        return service.getPatientHistory(name, phone);
+    }
+
     // 🔹 Update booking status (Doctor Dashboard)
     @PatchMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id,

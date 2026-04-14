@@ -19,15 +19,15 @@ export default function Booking() {
   // Doctor     → Online + Get Token
   // Management → All 4 options
   const methods = [
-    { type: "ONLINE",   label: "Online Booking", icon: "🌐" },
+    { type: "ONLINE", label: "Online Booking", icon: "🌐" },
     ...(role === "Doctor" || role === "Management"
       ? [{ type: "AADHAAR", label: "Get Token", icon: "🆔" }]
       : []),
     ...(role === "Management"
       ? [
-          { type: "QR",       label: "QR Code",       icon: "📱" },
-          { type: "GANTRADE", label: "Gantrade Card",  icon: "💳" },
-        ]
+        { type: "QR", label: "QR Code", icon: "📱" },
+        { type: "GANTRADE", label: "Gantrade Card", icon: "💳" },
+      ]
       : []),
   ];
 
@@ -450,11 +450,11 @@ export default function Booking() {
                     <span className="input-icon">🕐</span>
                     <select value={bookingTime} onChange={(e) => setBookingTime(e.target.value)} required>
                       <option value="">Select Time Slot</option>
-                      {["09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM",
-                        "12:00 PM","02:00 PM","02:30 PM","03:00 PM","03:30 PM",
-                        "04:00 PM","04:30 PM","05:00 PM"].map(slot => (
-                        <option key={slot} value={slot}>{slot}</option>
-                      ))}
+                      {["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+                        "12:00 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
+                        "04:00 PM", "04:30 PM", "05:00 PM"].map(slot => (
+                          <option key={slot} value={slot}>{slot}</option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -497,10 +497,10 @@ export default function Booking() {
                   <b>Hospital:</b> {hospital}
                 </p>
                 <p>
-                   <b>Booking Time:</b> {bookingTime || new Date().toLocaleTimeString()}
+                  <b>Booking Time:</b> {bookingTime || new Date().toLocaleTimeString()}
                 </p>
                 <p>
-                   <b>📅 Appointment Date:</b> {bookingDate || new Date().toLocaleDateString()}
+                  <b>📅 Appointment Date:</b> {bookingDate || new Date().toLocaleDateString()}
                 </p>
                 <hr />
                 <h3>⏳ Live Queue Status</h3>
