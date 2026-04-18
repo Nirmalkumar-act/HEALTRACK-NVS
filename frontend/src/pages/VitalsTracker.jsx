@@ -190,7 +190,16 @@ export default function VitalsTracker() {
               </thead>
               <tbody>
                 {entries.map(e => {
-                  const badge = getBadge("pulse", e.pulse) || getBadge("sugar", e.sugar) || getBadge("temperature", e.temperature) || "normal";
+                  const bPulse = getBadge("pulse", e.pulse);
+                  const bSugar = getBadge("sugar", e.sugar);
+                  const bTemp = getBadge("temperature", e.temperature);
+                  const bBP = getBadge("bp", e.bp);
+                  
+                  const badges = [bPulse, bSugar, bTemp, bBP];
+                  let badge = "normal";
+                  if (badges.includes("danger")) badge = "danger";
+                  else if (badges.includes("warning")) badge = "warning";
+                  
                   return (
                     <tr key={e.id}>
                       <td>{fmtDate(e.date)}</td>

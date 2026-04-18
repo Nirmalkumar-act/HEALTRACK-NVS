@@ -29,23 +29,16 @@ export default function QRScanner() {
     // If doctorname is present in QR, use it; otherwise allow user to select
     const doctorname = parsed.doctorname || selectedDoctor || "";
 
-    const booking = {
-      token: "TK" + Date.now().toString().slice(-4),
-      hospital: parsed.hospital || "Default Hospital",
-      name: parsed.name || "Unknown Patient",
-      age: parsed.age || "N/A",
-      gender: parsed.gender || "Other",
-      location: parsed.location || "Not Provided",
-      condition: parsed.condition || "N/A",
-      doctorname,
-      doctor: doctorname, // for backward compatibility
-      notes: parsed.notes || "",
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString(),
-    };
+    let patientAge = 0;
+    if (parsed.age) {
+        patientAge = parseInt(parsed.age);
+        if (isNaN(patientAge)) patientAge = 0;
+    }
 
-    addBooking(booking);
-    nav("/confirmation", { state: { booking } });
+    // Route to BookingConfirmation with Check-In Mode setup
+    nav("/confirmation", {
+      state: { scannedPatient: parsed }
+    });
   };
 
   const startCamera = async () => {

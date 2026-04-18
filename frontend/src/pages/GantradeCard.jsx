@@ -7,114 +7,111 @@ export default function GantradeCard() {
   const navigate = useNavigate();
   const { bookings } = useBooking();
 
-  // Default patient (first in bookings or blank)
+  // Default patient (from booking if available, otherwise blank)
   const defaultPatient = bookings[0] || {};
   const [form, setForm] = useState({
     name: defaultPatient.name || "",
     age: defaultPatient.age || "",
     gender: defaultPatient.gender || "",
-    condition: defaultPatient.condition || "",
-    doctorname: defaultPatient.doctorname || "", // fix: initialize doctorname
-    cardNo:
-      defaultPatient.cardNo || "GNT-" + Math.floor(1000 + Math.random() * 9000),
-    token:
-      defaultPatient.token || "TK" + Math.floor(1000 + Math.random() * 9000),
+    bloodGroup: "",
+    phone: defaultPatient.phone || "",
+    email: "",
+    address: "",
+    cardNo: "GNT-" + Math.floor(100000 + Math.random() * 900000),
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Update form if bookings change
   useEffect(() => {
     if (bookings.length > 0) {
       const patient = bookings[0];
-      setForm({
-        name: patient.name || "",
-        age: patient.age || "",
-        gender: patient.gender || "",
-        condition: patient.condition || "",
-        doctorname: patient.doctorname || "", // fix: use patient.doctorname
-        cardNo: patient.cardNo || "GNT-" + Math.floor(1000 + Math.random() * 9000),
-        token: patient.token || "TK" + Math.floor(1000 + Math.random() * 9000),
-      });
+      setForm((prev) => ({
+        ...prev,
+        name: patient.name || prev.name,
+        age: patient.age || prev.age,
+        phone: patient.phone || prev.phone,
+      }));
     }
   }, [bookings]);
 
-  // Prepare QR data as JSON
+  // The pure Identity payload
   const qrData = JSON.stringify({
     name: form.name,
     age: form.age,
     gender: form.gender,
-    condition: form.condition,
-    doctorname: form.doctorname,
+    bloodGroup: form.bloodGroup,
+    phone: form.phone,
+    email: form.email,
+    address: form.address,
     cardNo: form.cardNo,
-    token: form.token,
   });
 
   const handleSave = () => {
-    alert("Patient details stored successfully!");
+    alert("Patient ID Card generated successfully!");
   };
 
   return (
     <div className="gantrade-wrapper">
-      <h1 className="gantrade-title">💳 Gantrade Health Card</h1>
+      <h1 className="gantrade-title">🪪 Patient Health ID Card</h1>
 
       <div className="gantrade-container">
         {/* Left: Editable Form */}
         <div className="gantrade-form">
-          <h3>Enter Patient Details</h3>
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-          />
-          <input
-            name="age"
-            value={form.age}
-            onChange={handleChange}
-            placeholder="Age"
-          />
-          <select name="gender" value={form.gender} onChange={handleChange}>
-            <option value="">Select Gender</option>
-            <option value="Male">Male ♂</option>
-            <option value="Female">Female ♀</option>
-            <option value="Other">Other ⚧</option>
-          </select>
-          <input
-            name="condition"
-            value={form.condition}
-            onChange={handleChange}
-            placeholder="Condition / Symptoms"
-          />
-          <input
-            name="doctorname"
-            value={form.doctorname}
-            onChange={handleChange}
-            placeholder="Doctor Name"
-          />
-          <input
-            name="cardNo"
-            value={form.cardNo}
-            onChange={handleChange}
-            placeholder="Card Number"
-          />
-          <input
-            name="token"
-            value={form.token}
-            onChange={handleChange}
-            placeholder="Token Number"
-          />
+          <h3>Enter Patient Identity Details</h3>
+          
+          <label>Full Name</label>
+          <input name="name" value={form.name} onChange={handleChange} placeholder="Full Name" />
+          
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+            <div>
+              <label>Age</label>
+              <input name="age" value={form.age} onChange={handleChange} placeholder="Age" />
+            </div>
+            <div>
+              <label>Gender</label>
+              <select name="gender" value={form.gender} onChange={handleChange}>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
 
-          <button className="btn primary" onClick={handleSave}>
-            💾 Save Details
+          <label>Blood Group</label>
+          <select name="bloodGroup" value={form.bloodGroup} onChange={handleChange} style={{ width: "100%", marginBottom: "14px"}}>
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+
+          <label>Phone Number</label>
+          <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone Number" />
+          
+          <label>Email ID (Optional)</label>
+          <input name="email" value={form.email} onChange={handleChange} placeholder="Email Address" type="email" />
+
+          <label>Address</label>
+          <input name="address" value={form.address} onChange={handleChange} placeholder="Home Address" />
+
+          <label>Card Number (Auto)</label>
+          <input name="cardNo" value={form.cardNo} readOnly style={{ background: "#f1f5f9" }} />
+
+          <button className="btn primary" onClick={handleSave} style={{ width: "100%", marginTop: "10px" }}>
+            💾 Generate ID Card
           </button>
         </div>
 
         {/* Right: Gantrade Card Preview */}
         <div className="gantrade-card">
-          {/* Left: Photo + QR */}
           <div className="gantrade-left">
             <img
               src="https://ociacc.com/wp-content/uploads/2019/03/blank-profile-picture-973460_1280-1030x1030.png"
@@ -122,53 +119,26 @@ export default function GantradeCard() {
               className="patient-photo"
             />
             <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-                qrData
-              )}`}
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`}
               alt="QR Code"
               className="qr-code"
             />
           </div>
 
-          {/* Right: Patient Details */}
           <div className="gantrade-right">
-            <p><b>Name:</b> {form.name || "N/A"}</p>
-            <p><b>Age:</b> {form.age || "N/A"}</p>
-            <p><b>Gender:</b> {form.gender || "Other"}</p>
-            <p><b>Condition:</b> {form.condition || "N/A"}</p>
-            <p><b>Doctor:</b> {form.doctorname || "N/A"}</p>
+            <h2>{form.name || "Patient Name"}</h2>
+            <p style={{ color: "#e11d48", fontWeight: "bold", fontSize: "1.1rem" }}>
+              🩸 Blood Group: {form.bloodGroup || "—"}
+            </p>
+            <p><b>Age / Gender:</b> {form.age || "—"} yrs, {form.gender || "—"}</p>
+            <p><b>Phone:</b> {form.phone || "—"}</p>
+            <p><b>Email:</b> {form.email || "—"}</p>
+            <p><b>Address:</b> {form.address || "—"}</p>
             <p><b>Card No:</b> {form.cardNo}</p>
-            <p><b>Token:</b> {form.token}</p>
 
-            <h3>Previous Consultations</h3>
-            <table className="doctor-table">
-              <thead>
-                <tr>
-                  <th>Doctor</th>
-                  <th>Specialization</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Dr. Priya</td>
-                  <td>Cardiologist</td>
-                  <td>2025-06-14</td>
-                </tr>
-                <tr>
-                  <td>Dr. Arjun</td>
-                  <td>General Physician</td>
-                  <td>2025-07-20</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="gantrade-actions">
-              <button
-                className="btn primary"
-                onClick={() => alert("Scan functionality coming soon!")}
-              >
-                📷 Scan Gantrade
+            <div className="gantrade-actions" style={{ marginTop: "20px" }}>
+              <button className="btn primary" onClick={() => navigate("/qrscanner")}>
+                📷 Scan Check-in
               </button>
             </div>
           </div>
@@ -176,7 +146,7 @@ export default function GantradeCard() {
       </div>
 
       <button className="btn back" onClick={() => navigate("/booking")}>
-        ⬅ Back to Booking
+        ⬅ Back to Connect
       </button>
     </div>
   );

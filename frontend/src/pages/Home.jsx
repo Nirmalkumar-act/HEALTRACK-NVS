@@ -4,11 +4,11 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/Home.css";
 
 const bannerImages = [
-  "https://www.egohealth.it/wp-content/uploads/2014/03/f.jpg",
-  "https://s3.amazonaws.com/prodblogbucket/1/blogCover/ae48e534-dcf8-4c35-93c8-1fab3ceadd25.jpeg",
-  "https://www.rsiconcepts.com/blog/wp-content/uploads/2023/01/Queue-Management-System-Features-you-Need-for-Modern-Queuing-1.jpg",
-  "https://www.rsiconcepts.com/blog/wp-content/uploads/2021/09/Why-do-you-need-a-queue-management-system_1.jpg",
-  "https://www.shutterstock.com/image-vector/health-care-medical-science-icon-260nw-2461043781.jpg",
+  "https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/3845129/pexels-photo-3845129.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/305568/pexels-photo-305568.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1600",
 ];
 
 const FEATURES = [
@@ -69,8 +69,7 @@ export default function Home() {
                 src={img}
                 alt={`Hospital banner ${idx + 1}`}
                 className="hero-img"
-                loading="lazy"
-                onError={e => { e.currentTarget.src = "https://via.placeholder.com/1600x600?text=HealTrack"; }}
+                onError={e => { e.currentTarget.src = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%22600%22%20viewBox%3D%220%200%201600%20600%22%3E%3Crect%20fill%3D%22%232a3b4c%22%20width%3D%221600%22%20height%3D%22600%22%2F%3E%3Ctext%20fill%3D%22%23ffffff%22%20font-family%3D%22sans-serif%22%20font-size%3D%2260%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3EHealTrack%20Medical%20System%3C%2Ftext%3E%3C%2Fsvg%3E"; }}
               />
             </div>
           ))}
@@ -79,17 +78,11 @@ export default function Home() {
         <button className="slider-arrow right" onClick={next}>›</button>
         <div className="hero-overlay">
           <h1>Welcome to Heal Track 🏥</h1>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", marginBottom: 20 }}>
+          <p style={{ color: "rgba(88, 13, 216, 0.85)", fontSize: "1.05rem", marginBottom: 20 }}>
             Smart Healthcare, Zero Waiting — Digital hospital management for the modern age
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-            <button className="cta-btn" onClick={() => navigate("/health")}>
-              🏥 Health Dashboard
-            </button>
-            <button className="cta-btn" onClick={() => navigate("/booking")}>
-              📑 Book Appointment
-            </button>
-            <button className="cta-btn cta-secondary" onClick={() => navigate("/chatbot")}>
+            <button className="cta-btn cta-ai" onClick={() => navigate("/chatbot")}>
               🤖 AI ChatBot
             </button>
           </div>

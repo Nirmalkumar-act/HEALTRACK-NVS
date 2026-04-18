@@ -13,6 +13,13 @@ export default function Booking() {
   const { user } = useContext(AuthContext);
   const role = user?.role;
 
+  // Prevent Doctors from accessing this page completely
+  useEffect(() => {
+    if (role === "Doctor") {
+      nav("/dashboard", { replace: true });
+    }
+  }, [role, nav]);
+
   // ✅ THEN define methods (after role exists)
   // Role-based booking methods:
   // User       → Online Booking only
@@ -47,6 +54,8 @@ export default function Booking() {
   const [notes, setNotes] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   // Speech recognition
   const [speechText, setSpeechText] = useState("");
@@ -141,10 +150,12 @@ export default function Booking() {
       condition,
       doctor,
       notes,
-      bookingDate: bookingDate || new Date().toLocaleDateString(),
-      bookingTime: bookingTime || new Date().toLocaleTimeString(),
-      date: bookingDate || new Date().toLocaleDateString(),
-      time: bookingTime || new Date().toLocaleTimeString(),
+      phone,
+      email,
+      bookingDate: bookingDate || new Date().toISOString().slice(0, 10),
+      bookingTime: bookingTime || new Date().toLocaleTimeString('en-US', { hour12: true }),
+      date: bookingDate || new Date().toISOString().slice(0, 10),
+      time: bookingTime || new Date().toLocaleTimeString('en-US', { hour12: true }),
     };
 
     try {
@@ -265,6 +276,28 @@ export default function Booking() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
+            </div>
+
+            <div className="grid2">
+              <div className="input-group">
+                <span className="input-icon">📞</span>
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div className="input-group">
+                <span className="input-icon">✉️</span>
+                <input
+                  type="email"
+                  placeholder="Email ID (Optional)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="input-group">

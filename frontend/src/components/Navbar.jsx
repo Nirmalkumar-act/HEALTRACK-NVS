@@ -113,12 +113,14 @@ export default function Navbar() {
           </NavLink>
         </li>
 
-        {/* Booking */}
-        <li>
-          <NavLink to="/booking" className="nav-link" onClick={closeAll}>
-            <FaBookMedical /> Booking
-          </NavLink>
-        </li>
+        {/* Booking (Hidden for Doctors) */}
+        {role !== "Doctor" && (
+          <li>
+            <NavLink to="/booking" className="nav-link" onClick={closeAll}>
+              <FaBookMedical /> Booking
+            </NavLink>
+          </li>
+        )}
 
         {/* Queue */}
         <li>
@@ -153,7 +155,6 @@ export default function Navbar() {
         >
           {/* All roles */}
           <SubItem icon={<FaHospital />} label="Hospital Tracker" to="/tracker" onClick={closeAll} />
-          <SubItem icon={<FaMapMarkerAlt />} label="Nearby Hospitals" to="/nearby" onClick={closeAll} />
           <SubItem icon={<FaAmbulance />} label="Emergency" to="/emergency" onClick={closeAll} />
           <SubItem icon={<FaSearch />} label="Services" to="/services" onClick={closeAll} />
           <SubItem icon={<FaRobot />} label="AI Chatbot" to="/chatbot" onClick={closeAll} />
@@ -163,7 +164,6 @@ export default function Navbar() {
           {role === "Management" && (
             <>
               <SubItem icon={<FaQrcode />} label="QR Scanner" to="/qrscanner" onClick={closeAll} />
-              <SubItem icon={"🪪"} label="Scan Patient ID" to="/scan" onClick={closeAll} />
               <SubItem icon={"🪙"} label="Gantrade Card" to="/gantrade" onClick={closeAll} />
             </>
           )}
@@ -181,7 +181,6 @@ export default function Navbar() {
             <SubItem icon={<FaPrescriptionBottleAlt />} label="Write Prescription" to="/prescription" onClick={closeAll} />
             {role === "Management" && (
               <>
-                <SubItem icon={"🧪"} label="Med Waste" to="/medwaste" onClick={closeAll} />
                 <SubItem icon={"📊"} label="Export to Excel" to="/export" onClick={closeAll} />
               </>
             )}
