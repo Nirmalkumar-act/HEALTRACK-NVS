@@ -54,4 +54,20 @@ public class AIController {
     public ResponseEntity<Map<String, String>> health() {
         return ResponseEntity.ok(Map.of("status", "ok", "service", "ai-chat"));
     }
+
+    @PostMapping("/check-clash")
+    public ResponseEntity<Map<String, String>> checkClash(@RequestBody Map<String, String> request) {
+        String patientName = request.get("patientName");
+        String newMedications = request.get("newMedications");
+
+        if (patientName == null || patientName.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("result", "[SAFE] Patient name missing."));
+        }
+        if (newMedications == null || newMedications.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("result", "[SAFE] No medications provided to check."));
+        }
+
+        String aiResult = aiService.checkDrugInteractions(patientName, newMedications);
+        return ResponseEntity.ok(Map.of("result", aiResult));
+    }
 }

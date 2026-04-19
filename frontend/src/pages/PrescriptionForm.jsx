@@ -25,6 +25,49 @@ export default function PrescriptionForm() {
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
+  // AI Clash Predictor States
+  const [clashResult, setClashResult] = useState(null); // { status: "SAFE"|"WARNING"|"CRITICAL", msg: "" }
+  const [checkingClash, setCheckingClash] = useState(false);
+
+  // Check drug interactions using Gemini backend
+  const handleCheckInteractions = async () => {
+    if (!form.patientName.trim() || !form.medications.trim()) {
+      alert("Please enter both Patient Name and Medications to check for interactions.");
+      return;
+    }
+    
+    setCheckingClash(true);
+    setClashResult(null);
+    try {
+      const res = await api.post("/ai/check-clash", {
+        patientName: form.patientName,
+        newMedications: form.medications
+      });
+      
+      const reply = res.data.result || "";
+      let status = "SAFE";
+      let msg = reply;
+      
+      if (reply.startsWith("[CRITICAL_CLASH]")) {
+        status = "CRITICAL";
+        msg = reply.replace("[CRITICAL_CLASH]", "").trim();
+      } else if (reply.startsWith("[WARNING]")) {
+        status = "WARNING";
+        msg = reply.replace("[WARNING]", "").trim();
+      } else if (reply.startsWith("[SAFE]")) {
+        status = "SAFE";
+        msg = reply.replace("[SAFE]", "").trim();
+      }
+
+      setClashResult({ status, msg });
+    } catch (err) {
+      console.error(err);
+      setClashResult({ status: "WARNING", msg: "Could not reach AI analysis service. Please use manual clinical judgment." });
+    } finally {
+      setCheckingClash(false);
+    }
+  };
+
   // Fetch prescriptions written by this doctor
   useEffect(() => {
     if (!user?.name) return;
@@ -145,6 +188,31 @@ export default function PrescriptionForm() {
                 onChange={handleChange}
                 rows={3}
               />
+              <button 
+                type="button" 
+                className="rx-btn" 
+                style={{ marginTop: "10px", background: "linear-gradient(135deg, #6c63ff, #a78bfa)", border: "none", padding: "10px", color: "white", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" }}
+                onClick={handleCheckInteractions}
+                disabled={checkingClash}
+              >
+                {checkingClash ? "⏳ Analyzing Pharmacology..." : "🤖 Check Drug Interactions"}
+              </button>
+
+              {clashResult && (
+                <div style={{
+                  marginTop: "12px", padding: "14px", borderRadius: "8px", fontWeight: "600", fontSize: "0.95rem",
+                  background: clashResult.status === "SAFE" ? "rgba(67, 233, 123, 0.15)" :
+                              clashResult.status === "WARNING" ? "rgba(247, 151, 30, 0.15)" : "rgba(233, 108, 108, 0.15)",
+                  color: clashResult.status === "SAFE" ? "#34d399" :
+                         clashResult.status === "WARNING" ? "#fbbf24" : "#f87171",
+                  border: `1px solid ${clashResult.status === "SAFE" ? "rgba(67, 233, 123, 0.4)" : clashResult.status === "WARNING" ? "rgba(247, 151, 30, 0.4)" : "rgba(233, 108, 108, 0.4)"}`
+                }}>
+                  {clashResult.status === "SAFE" && "✅ SAFE: "}
+                  {clashResult.status === "WARNING" && "⚠️ WARNING: "}
+                  {clashResult.status === "CRITICAL" && "🔴 CRITICAL CLASH: "}
+                  {clashResult.msg}
+                </div>
+              )}
             </div>
 
             <div className="rx-field full">
@@ -181,33 +249,16 @@ export default function PrescriptionForm() {
             <button type="button" className="rx-btn secondary" onClick={() => navigate("/dashboard")}>
               ← Back to Dashboard
             </button>
-            <button type="submit" className="rx-btn primary" disabled={submitting}>
+            <button 
+              type="submit" 
+              className="rx-btn primary" 
+              disabled={submitting || clashResult?.status === "CRITICAL"}
+              title={clashResult?.status === "CRITICAL" ? "Cannot save while a Critical Clash exists. Please alter medications." : ""}
+            >
               {submitting ? "Saving…" : "💾 Save Prescription"}
             </button>
           </div>
         </form>
-
-        {/* Doctor's prescription history */}
-        <div className="rx-list">
-          <h2>📋 My Recent Prescriptions</h2>
-          {loadingHistory ? (
-            <p style={{ color: "rgba(255,255,255,0.4)" }}>Loading…</p>
-          ) : history.length === 0 ? (
-            <p style={{ color: "rgba(255,255,255,0.4)" }}>No prescriptions written yet.</p>
-          ) : (
-            history.slice(0, 5).map(rx => (
-              <div key={rx.id} className="rx-history-card">
-                <h4>👤 {rx.patientName}</h4>
-                <p>🔖 Token: <span className="rx-tag">{rx.bookingToken || "N/A"}</span></p>
-                <p>📅 {formatDate(rx.createdAt)}</p>
-                <p>🔍 {rx.diagnosis}</p>
-                {rx.medications && (
-                  <p>💊 {rx.medications}</p>
-                )}
-              </div>
-            ))
-          )}
-        </div>
       </div>
     </div>
   );

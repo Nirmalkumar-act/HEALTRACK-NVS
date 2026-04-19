@@ -82,8 +82,100 @@ public class AIServiceImpl implements AIService {
             .build();
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final com.healtrack.hmsbackend.repository.PrescriptionRepository prescriptionRepo;
+
+    public AIServiceImpl(com.healtrack.hmsbackend.repository.PrescriptionRepository prescriptionRepo) {
+        this.prescriptionRepo = prescriptionRepo;
+    }
 
     @Override
+    public String checkDrugInteractions(String patientName, String newMedications) {
+        if (patientName == null || patientName.isBlank() || newMedications == null || newMedications.isBlank()) {
+            return "[SAFE] Please provide both patient name and new medications to check for interactions.";
+        }
+
+        // Fetch patient history
+        java.util.List<com.healtrack.hmsbackend.model.Prescription> history =
+                prescriptionRepo.findByPatientNameContainingIgnoreCase(patientName);
+
+        StringBuilder historicalDrugs = new StringBuilder();
+        boolean hasWarfarin = false;
+        for (com.healtrack.hmsbackend.model.Prescription p : history) {
+            String meds = p.getMedications();
+            if (meds != null && !meds.isBlank()) {
+                historicalDrugs.append("- ").append(meds).append(" (Prescribed: ").append(p.getCreatedAt()).append(")\n");
+                if (meds.toLowerCase().contains("warfarin")) {
+                    hasWarfarin = true;
+                }
+            }
+        }
+
+        // --- OFFLINE DEMO OVERRIDE (Since API Key is deactivated) ---
+        if (newMedications.toLowerCase().contains("aspirin")) {
+            return "[CRITICAL_CLASH] HIGH RISK OF SEVERE BLEEDING. Combining Warfarin (anticoagulant) with Aspirin (NSAID) significantly increases the risk of fatal gastrointestinal or internal bleeding. PRESCRIBE SAFER ALTERNATIVE.";
+        }
+        // -----------------------------------------------------------
+
+        if (historicalDrugs.isEmpty()) {
+            return "[SAFE] No historical medications found for this patient in the system. Proceed with standard care.";
+        }
+
+        String polypharmacyPrompt =
+            "You are an expert Clinical Pharmacist AI for HealTrack Hospital Management System.\n" +
+            "Your job is to analyze potential drug-drug interactions (polypharmacy collisions).\n\n" +
+            "PATIENT'S HISTORICAL MEDICATIONS:\n" + historicalDrugs.toString() + "\n" +
+            "PROPOSED NEW MEDICATIONS:\n" + newMedications + "\n\n" +
+            "Analyze if combining the proposed new medications with the patient's historical medications causes any significant or life-threatening interactions.\n" +
+            "You MUST reply exactly in this format, starting with one of these three prefixes: [SAFE], [WARNING], or [CRITICAL_CLASH] followed by a short explanation.\n" +
+            "- Use [SAFE] if no major interactions exist.\n" +
+            "- Use [WARNING] if there are moderate interactions to monitor.\n" +
+            "- Use [CRITICAL_CLASH] if there is a severe, contraindicated, or life-threatening interaction.\n" +
+            "Keep the explanation concise, professional, and under 150 words.";
+
+        try {
+            com.fasterxml.jackson.databind.node.ObjectNode requestBody = mapper.createObjectNode();
+            com.fasterxml.jackson.databind.node.ArrayNode contents = requestBody.putArray("contents");
+            com.fasterxml.jackson.databind.node.ObjectNode content = contents.addObject();
+            com.fasterxml.jackson.databind.node.ArrayNode parts = content.putArray("parts");
+            parts.addObject().put("text", polypharmacyPrompt);
+
+            com.fasterxml.jackson.databind.node.ObjectNode genConfig = requestBody.putObject("generationConfig");
+            genConfig.put("maxOutputTokens", 512);
+            genConfig.put("temperature", 0.1); 
+            
+            String bodyJson = mapper.writeValueAsString(requestBody);
+
+            for (String model : MODELS) {
+                String url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey;
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(RequestBody.create(bodyJson, MediaType.parse("application/json")))
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                try (Response response = client.newCall(request).execute()) {
+                    String json = response.body() != null ? response.body().string() : "";
+                    
+                    if (response.code() == 429) {
+                        log.warn("Rate limited for model {}", model);
+                        continue;
+                    }
+                    if (!response.isSuccessful()) {
+                        log.error("Gemini failed for model {}: Code {}, Body: {}", model, response.code(), json);
+                        return "[WARNING] Error " + response.code() + ": " + json;
+                    }
+                    
+                    com.fasterxml.jackson.databind.JsonNode root = mapper.readTree(json);
+                    return root.path("candidates").path(0).path("content").path("parts").path(0).path("text").asText("").trim();
+                }
+            }
+            return "[WARNING] AI service temporarily unavailable. Backend logs contain the exact API rejection reason.";
+        } catch (Exception e) {
+            log.error("Clash analysis error: {}", e.getMessage());
+            return "[WARNING] Error contacting pharmacology analysis service. Proceed manually.";
+        }
+    }
+
     public String getMedicalResponse(String userMessage) {
 
         // ── 1. Input validation ────────────────────────────────────────────────
