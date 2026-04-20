@@ -467,6 +467,29 @@ export default function Booking() {
                   />
                 </div>
 
+                {/* 📞 Phone & Email */}
+                <div className="grid2">
+                  <div className="input-group">
+                    <span className="input-icon">📞</span>
+                    <input
+                      type="tel"
+                      placeholder="Phone Number"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <span className="input-icon">✉️</span>
+                    <input
+                      type="email"
+                      placeholder="Email ID (Optional)"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+
                 {/* 📅 Date & Time Picker */}
                 <div className="grid2">
                   <div className="input-group">
@@ -535,6 +558,8 @@ export default function Booking() {
                 <p>
                   <b>📅 Appointment Date:</b> {bookingDate || new Date().toLocaleDateString()}
                 </p>
+                {phone && <p><b>📞 Phone:</b> {phone}</p>}
+                {email && <p><b>✉️ Email:</b> {email}</p>}
                 <hr />
                 <h3>⏳ Live Queue Status</h3>
                 <p className="queue-status">{getQueueStatus(newToken)}</p>
