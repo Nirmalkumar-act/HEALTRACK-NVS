@@ -1,0 +1,320 @@
+/* ─── PatientHistory.css ──────────────────────────────────────────────────── */
+
+.ph-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1e 0%, #0d1b2a 50%, #0a0f1e 100%);
+  padding: 40px 24px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #e8f4f8;
+}
+
+.ph-header {
+  max-width: 900px;
+  margin: 0 auto 32px;
+}
+
+.ph-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 6px;
+}
+
+.ph-header p {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Search Card ─────────────────────────────────────────────────────────── */
+.ph-search-card {
+  max-width: 900px;
+  margin: 0 auto 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 28px;
+  backdrop-filter: blur(12px);
+}
+
+.ph-search-card h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ph-search-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.ph-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.ph-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ph-field input {
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
+  color: #e8f4f8;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ph-field input:focus {
+  border-color: #43e97b;
+}
+
+.ph-field input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.ph-search-btn {
+  padding: 11px 28px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: #0a0f1e;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.ph-search-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.ph-search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Result Container ────────────────────────────────────────────────────── */
+.ph-result {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ph-patient-banner {
+  background: linear-gradient(135deg, rgba(67, 233, 123, 0.12), rgba(56, 249, 215, 0.08));
+  border: 1px solid rgba(67, 233, 123, 0.25);
+  border-radius: 16px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.ph-patient-info h3 {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #43e97b;
+}
+
+.ph-patient-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ph-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.ph-stat-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 18px;
+  text-align: center;
+}
+
+.ph-stat-badge span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #38f9d7;
+  line-height: 1;
+}
+
+.ph-stat-badge small {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.ph-download-btn {
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #6c63ff, #a78bfa);
+  color: white;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.ph-download-btn:hover { opacity: 0.85; }
+
+/* ── Section Panel ───────────────────────────────────────────────────────── */
+.ph-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.ph-section h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.85);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ph-table-wrap {
+  overflow-x: auto;
+}
+
+.ph-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.855rem;
+}
+
+.ph-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+}
+
+.ph-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.78);
+  vertical-align: top;
+}
+
+.ph-table tr:last-child td { border-bottom: none; }
+.ph-table tr:hover td { background: rgba(255, 255, 255, 0.03); }
+
+.ph-status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ph-status-DONE       { background: rgba(67, 233, 123, 0.15); color: #43e97b; }
+.ph-status-WAITING    { background: rgba(247, 151, 30, 0.15); color: #f7971e; }
+.ph-status-IN_CONSULTATION { background: rgba(86, 204, 242, 0.15); color: #56ccf2; }
+.ph-status-CANCELLED  { background: rgba(233, 108, 108, 0.15); color: #e96c6c; }
+
+.ph-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 28px;
+  font-size: 0.9rem;
+}
+
+.ph-back-btn {
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0 0 20px;
+  display: block;
+  transition: color 0.2s;
+}
+.ph-back-btn:hover { color: white; }
+
+/* ─────────────────── PRINT / PDF STYLES ─────────────────────────────────── */
+@media print {
+  body, .ph-wrapper {
+    background: white !important;
+    color: #111 !important;
+    font-size: 11pt;
+  }
+
+  .ph-back-btn,
+  .ph-search-card,
+  .ph-download-btn,
+  nav, footer, .chatbot-container {
+    display: none !important;
+  }
+
+  .ph-patient-banner {
+    background: #f0f9f4 !important;
+    border: 2px solid #43e97b !important;
+    color: #111 !important;
+  }
+
+  .ph-patient-info h3 { color: #1a6e3c !important; }
+  .ph-patient-info p  { color: #555 !important; }
+
+  .ph-stat-badge {
+    background: #f5f5f5 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .ph-stat-badge span { color: #0077b6 !important; }
+  .ph-stat-badge small { color: #888 !important; }
+
+  .ph-section {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    page-break-inside: avoid;
+  }
+
+  .ph-section h2 {
+    color: #333 !important;
+    border-color: #ddd !important;
+  }
+
+  .ph-table th { color: #666 !important; }
+  .ph-table td { color: #222 !important; border-color: #eee !important; }
+
+  .ph-status-badge {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .ph-header h1 {
+    -webkit-text-fill-color: #1a6e3c !important;
+    color: #1a6e3c !important;
+  }
+
+  .ph-header p { color: #666 !important; }
+}

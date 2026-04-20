@@ -217,6 +217,9 @@ export default function DoctorDashboard() {
         <button className="btn primary" onClick={() => navigate("/prescription")}>
           📝 Write Prescription
         </button>
+        <button className="btn primary" onClick={() => navigate("/patient-history")}>
+          📁 Patient History
+        </button>
         <button className="btn primary" onClick={() => navigate("/review")}>
           ⭐ View Patient Reviews
         </button>

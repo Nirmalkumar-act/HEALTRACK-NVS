@@ -33,11 +33,12 @@ import HealthDashboard   from "./pages/HealthDashboard";
 import AppointmentStatus from "./pages/AppointmentStatus";
 
 // ── New Feature Pages ──────────────────────────────────────────────────────
-import PrescriptionForm from "./pages/PrescriptionForm";
-import PatientRecords   from "./pages/PatientRecords";
-import MedicineReminder from "./pages/MedicineReminder";
-import VitalsTracker    from "./pages/VitalsTracker";
-import DataExport       from "./pages/DataExport";
+import PrescriptionForm      from "./pages/PrescriptionForm";
+import PatientRecords        from "./pages/PatientRecords";
+import MedicineReminder      from "./pages/MedicineReminder";
+import VitalsTracker         from "./pages/VitalsTracker";
+import DataExport            from "./pages/DataExport";
+import PatientHistoryViewer  from "./pages/PatientHistoryViewer";
 
 // ── Config ─────────────────────────────────────────────────────────────────
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
@@ -126,6 +127,8 @@ function App() {
                 element={<ProtectedRoute roles={["Doctor","Management"]}><DoctorDashboard /></ProtectedRoute>} />
               <Route path="/prescription"
                 element={<ProtectedRoute roles={["Doctor","Management"]}><PrescriptionForm /></ProtectedRoute>} />
+              <Route path="/patient-history"
+                element={<ProtectedRoute roles={["Doctor","Management"]}><PatientHistoryViewer /></ProtectedRoute>} />
               <Route path="/export"
                 element={<ProtectedRoute roles={["Management"]}><DataExport /></ProtectedRoute>} />
 

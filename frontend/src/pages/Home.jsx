@@ -77,8 +77,8 @@ export default function Home() {
         <button className="slider-arrow left" onClick={prev}>‹</button>
         <button className="slider-arrow right" onClick={next}>›</button>
         <div className="hero-overlay">
-          <h1>Welcome to Heal Track 🏥</h1>
-          <p style={{ color: "rgba(88, 13, 216, 0.85)", fontSize: "1.05rem", marginBottom: 20 }}>
+          <h1>WELCOM TO HEAL TRACK 🏥</h1>
+          <p style={{ color: "rgba(4, 4, 4, 1)", fontSize: "1.05rem", marginBottom: 20 }}>
             Smart Healthcare, Zero Waiting — Digital hospital management for the modern age
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
