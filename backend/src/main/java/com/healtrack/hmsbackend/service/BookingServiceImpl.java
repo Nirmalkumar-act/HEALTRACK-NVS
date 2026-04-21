@@ -5,6 +5,7 @@ import com.healtrack.hmsbackend.repository.BookingRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +13,12 @@ import java.util.Optional;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository repository;
+    private final NotificationService notificationService;
 
-    public BookingServiceImpl(BookingRepository repository) {
+    public BookingServiceImpl(BookingRepository repository,
+                              NotificationService notificationService) {
         this.repository = repository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -22,7 +26,28 @@ public class BookingServiceImpl implements BookingService {
         if (booking == null) {
             throw new IllegalArgumentException("Booking cannot be null");
         }
-        return repository.save(booking);
+
+        // Save first — booking must succeed regardless of email
+        Booking saved = repository.save(booking);
+
+        // Count how many patients are already WAITING today (queue position)
+        String today = LocalDate.now().toString(); // e.g. "2026-04-20"
+        try {
+            List<Booking> todayWaiting = repository.findByBookingDate(today).stream()
+                    .filter(b -> b.getStatus() == Booking.BookingStatus.WAITING
+                              && !b.getId().equals(saved.getId()))
+                    .toList();
+            int queuePosition = todayWaiting.size();
+
+            // Send email asynchronously — never blocks the API response
+            notificationService.sendBookingConfirmation(saved, queuePosition);
+
+        } catch (Exception e) {
+            // If queue counting fails, still send with position 0
+            notificationService.sendBookingConfirmation(saved, 0);
+        }
+
+        return saved;
     }
 
     @Override
@@ -56,3 +81,4 @@ public class BookingServiceImpl implements BookingService {
         return List.of();
     }
 }
+

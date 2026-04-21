@@ -57,6 +57,22 @@ export default function Booking() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
+  // ── Validation States ──────────────────────────────────────────────────────
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validatePhone = (val) => {
+    if (!val.trim()) { setPhoneError("Phone number is required."); return false; }
+    if (!/^[6-9]\d{9}$/.test(val.trim())) { setPhoneError("Enter a valid 10-digit Indian mobile number."); return false; }
+    setPhoneError(""); return true;
+  };
+
+  const validateEmail = (val) => {
+    if (!val.trim()) { setEmailError(""); return true; } // optional
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim())) { setEmailError("Enter a valid email address."); return false; }
+    setEmailError(""); return true;
+  };
+
   // Speech recognition
   const [speechText, setSpeechText] = useState("");
   const [listening, setListening] = useState(false);
@@ -135,6 +151,10 @@ export default function Booking() {
       alert("Please fill all required fields.");
       return;
     }
+
+    const phoneOk = validatePhone(phone);
+    const emailOk = validateEmail(email);
+    if (!phoneOk || !emailOk) return;
 
     const token = Math.floor(1000 + Math.random() * 9000);
 
@@ -286,8 +306,9 @@ export default function Booking() {
                   placeholder="Phone Number"
                   required
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => { setPhone(e.target.value); validatePhone(e.target.value); }}
                 />
+                {phoneError && <p style={{color:"#e96c6c",fontSize:"0.75rem",margin:"4px 0 0 4px"}}>{phoneError}</p>}
               </div>
               <div className="input-group">
                 <span className="input-icon">✉️</span>
@@ -295,8 +316,9 @@ export default function Booking() {
                   type="email"
                   placeholder="Email ID (Optional)"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); validateEmail(e.target.value); }}
                 />
+                {emailError && <p style={{color:"#e96c6c",fontSize:"0.75rem",margin:"4px 0 0 4px"}}>{emailError}</p>}
               </div>
             </div>
 
@@ -476,8 +498,9 @@ export default function Booking() {
                       placeholder="Phone Number"
                       required
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => { setPhone(e.target.value); validatePhone(e.target.value); }}
                     />
+                    {phoneError && <p style={{color:"#e96c6c",fontSize:"0.75rem",margin:"4px 0 0 4px"}}>{phoneError}</p>}
                   </div>
                   <div className="input-group">
                     <span className="input-icon">✉️</span>
@@ -485,8 +508,9 @@ export default function Booking() {
                       type="email"
                       placeholder="Email ID (Optional)"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => { setEmail(e.target.value); validateEmail(e.target.value); }}
                     />
+                    {emailError && <p style={{color:"#e96c6c",fontSize:"0.75rem",margin:"4px 0 0 4px"}}>{emailError}</p>}
                   </div>
                 </div>
 
