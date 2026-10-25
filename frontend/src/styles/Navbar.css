@@ -25,25 +25,30 @@
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 8px; /* spacing between logo and text */
+  gap: 8px;
+  /* spacing between logo and text */
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
 .navbar-logo:hover {
-  transform: scale(1.05); /* subtle zoom effect on hover */
+  transform: scale(1.05);
+  /* subtle zoom effect on hover */
 }
 
 .logo-img {
-  height: 45px;  /* slightly larger for clarity */
+  height: 45px;
+  /* slightly larger for clarity */
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* soft shadow */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  /* soft shadow */
 }
 
 .logo-text {
   font-size: 22px;
   font-weight: 700;
-  color: #dcf000; /* white for navbar background */
+  color: #dcf000;
+  /* white for navbar background */
   letter-spacing: 1.5px;
   text-transform: uppercase;
   position: relative;
@@ -58,7 +63,8 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, #f8ec00, #d8f30d); /* gradient underline */
+  background: linear-gradient(90deg, #f8ec00, #d8f30d);
+  /* gradient underline */
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease;
@@ -129,7 +135,8 @@
 
 .nav-link:hover .nav-icon,
 .nav-link.active .nav-icon {
-  color: #ffd700; /* Gold */
+  color: #ffd700;
+  /* Gold */
   transform: scale(1.2);
 }
 
@@ -170,9 +177,11 @@
 .menu-toggle.open div:nth-child(1) {
   transform: rotate(45deg) translateY(8px);
 }
+
 .menu-toggle.open div:nth-child(2) {
   opacity: 0;
 }
+
 .menu-toggle.open div:nth-child(3) {
   transform: rotate(-45deg) translateY(-8px);
 }
@@ -204,7 +213,7 @@
   list-style: none;
   padding: 10px 0;
   width: 160px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
   animation: fadeIn 0.3s ease-in-out;
   z-index: 999;
 }
@@ -226,8 +235,15 @@
 
 /* Dropdown Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* === DROPDOWN BUTTON (nav-link styled button) === */
@@ -246,20 +262,28 @@
   border-radius: 6px;
   transition: color 0.3s, background 0.3s, transform 0.2s;
 }
+
 .nav-dropdown-btn:hover,
 .nav-dropdown-btn.active {
   color: #fff;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
+
 .chevron {
   font-size: 0.75rem;
   transition: transform 0.25s;
 }
-.chevron.open { transform: rotate(180deg); }
+
+.chevron.open {
+  transform: rotate(180deg);
+}
 
 /* === NAV SUBMENU (dropdown panel) === */
-.nav-dropdown-wrap    { position: relative; }
+.nav-dropdown-wrap {
+  position: relative;
+}
+
 .nav-submenu {
   position: absolute;
   top: calc(100% + 8px);
@@ -267,14 +291,15 @@
   min-width: 220px;
   background: rgba(21, 78, 180, 0.97);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   list-style: none;
   padding: 8px 0;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   z-index: 1100;
   animation: fadeIn 0.2s ease;
 }
+
 .nav-submenu li {
   display: flex;
   align-items: center;
@@ -286,11 +311,15 @@
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
 }
+
 .nav-submenu li:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffd700;
 }
-.nav-submenu li svg { flex-shrink: 0; }
+
+.nav-submenu li svg {
+  flex-shrink: 0;
+}
 
 /* === PROFILE NAME === */
 .profile-name {
@@ -307,13 +336,14 @@
 /* === DROPDOWN USER INFO === */
 .dropdown-user-info {
   padding: 10px 16px 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
   gap: 2px;
   color: #fff;
   font-size: 0.88rem;
 }
+
 .dropdown-user-info small {
   font-size: 0.73rem;
   color: #ffd700;
@@ -322,7 +352,9 @@
 }
 
 /* Dropdown menu wider now */
-.dropdown-menu { width: 185px; }
+.dropdown-menu {
+  width: 185px;
+}
 
 
 /* === RESPONSIVE (Dropdown aligns inside mobile menu) === */
@@ -330,6 +362,7 @@
   .profile-dropdown {
     align-self: flex-start;
   }
+
   .dropdown-menu {
     position: relative;
     top: 10px;
@@ -393,5 +426,5 @@
 }
 
 .profile-trigger:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }

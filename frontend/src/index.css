@@ -1,9 +1,17 @@
 /* ── Reset & Base ─────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   overflow-x: hidden;
 }
@@ -27,75 +35,92 @@ body {
   /* NO padding — each page handles its own spacing */
 }
 
-.footer { margin-top: auto; }
+.footer {
+  margin-top: auto;
+}
 
-/* ── Google Translate — Fixed Floating (Bottom-Right) ─────── */
+/* ── Google Translate Utilities — COMPLETE HIDE ────────────── */
 
-/* 1. Kill the default inline bar so there's ZERO gap */
-#google_translate_element,
-.goog-te-gadget-simple,
-.goog-te-menu-value {
+/* Hide the Google Translate top banner bar completely */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+/* Prevent Google Translate from pushing body down */
+body {
+  top: 0 !important;
+  position: static !important;
+}
+
+/* Force html top to 0 as well (GT sometimes sets it) */
+html {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Hide all Google Translate popup UI */
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-te-menu-frame,
+.goog-te-menu-value,
+div#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-gadget,
+.goog-te-gadget-icon,
+.VIpgJd-ZVi9od,
+.goog-te-spinner-pos,
+div.goog-te-spinner-pos,
+[id^="goog-gt-"],
+.skiptranslate.goog-te-gadget {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Remove Google Translate text highlight */
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Hide the skiptranslate top bar (the one GT injects as direct child of body) */
+body>.skiptranslate {
   display: none !important;
   height: 0 !important;
   overflow: hidden !important;
 }
 
-/* 2. Our custom floating wrapper */
-.gt-float-wrap {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 50px;
-  padding: 6px 12px 6px 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.gt-float-wrap:hover {
-  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
-  transform: translateY(-2px);
+/* Also hide any GT banner divs that appear */
+body>div.skiptranslate:not(#google_translate_element) {
+  display: none !important;
+  height: 0 !important;
 }
 
-/* Globe emoji */
-.gt-label {
-  font-size: 1.1rem;
-  line-height: 1;
+/* KEEP only the hidden container for Google Translate combo box */
+#google_translate_element {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
-/* Show the translate widget inside the float wrap */
-.gt-float-wrap #google_translate_element {
+/* Restore goog-te-combo (the select element we use programmatically) */
+#google_translate_element .goog-te-combo {
   display: block !important;
-  height: auto !important;
-  overflow: visible !important;
+  visibility: visible !important;
 }
-.gt-float-wrap .goog-te-gadget-simple {
-  display: inline-flex !important;
-  height: auto !important;
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  font-size: 0.82rem !important;
-  font-family: 'Inter', sans-serif !important;
-}
-.gt-float-wrap .goog-te-menu-value {
-  display: inline-flex !important;
-  align-items: center !important;
-  color: #333 !important;
-  font-weight: 500 !important;
-}
-.gt-float-wrap .goog-te-gadget-simple img { display: none !important; }
-
-/* Hide Google Translate top banner */
-.goog-te-banner-frame,
-.skiptranslate > iframe { display: none !important; }
-body { top: 0 !important; }
 
 /* ── Utility ──────────────────────────────────────────────── */
 .container {
@@ -103,7 +128,22 @@ body { top: 0 !important; }
   margin: 0 auto;
   padding: 16px;
 }
-.row { display: flex; gap: 16px; }
-.col { flex: 1; }
-.small { font-size: 0.9rem; color: #555; }
-.error { color: #b00020; margin-top: 6px; }
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.col {
+  flex: 1;
+}
+
+.small {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.error {
+  color: #b00020;
+  margin-top: 6px;
+}

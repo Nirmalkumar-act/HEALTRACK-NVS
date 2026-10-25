@@ -1,0 +1,231 @@
+/* ═══════════════════════════════════════════════════════════════
+   SplashScreen.css  –  HealTrack Intro Animation
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap");
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 30% 30%, #0b1437 0%, #060c22 60%, #000 100%);
+  overflow: hidden;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  font-family: "Outfit", sans-serif;
+}
+
+/* Phase classes */
+.splash-enter  { opacity: 0; transform: scale(1.05); }
+.splash-pulse  { opacity: 1; transform: scale(1); }
+.splash-exit   { opacity: 0; transform: scale(0.95); pointer-events: none; }
+
+/* ── Background particles ────────────────────────────────────── */
+.splash-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #7b2ff7, #00d2ff);
+  left: calc(var(--i) * 5.26%);
+  top: calc(var(--i) * 4.7% + 10%);
+  animation: floatParticle calc(3s + var(--i) * 0.4s) ease-in-out infinite alternate;
+  opacity: 0.6;
+}
+
+@keyframes floatParticle {
+  from { transform: translateY(0) scale(1); opacity: 0.4; }
+  to   { transform: translateY(-40px) scale(1.6); opacity: 0.9; }
+}
+
+/* ── Glowing rings ──────────────────────────────────────────── */
+.splash-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 47, 247, 0.25);
+  animation: ringPulse 2.4s ease-in-out infinite;
+}
+
+.splash-ring-outer {
+  width: 500px;
+  height: 500px;
+  border-color: rgba(0, 210, 255, 0.15);
+  animation-delay: 0s;
+}
+
+.splash-ring-inner {
+  width: 340px;
+  height: 340px;
+  border-color: rgba(123, 47, 247, 0.3);
+  animation-delay: 0.4s;
+}
+
+@keyframes ringPulse {
+  0%   { transform: scale(0.92); opacity: 0.3; }
+  50%  { transform: scale(1.04); opacity: 0.8; }
+  100% { transform: scale(0.92); opacity: 0.3; }
+}
+
+/* ── Logo container ─────────────────────────────────────────── */
+.splash-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: splashEntry 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes splashEntry {
+  from { opacity: 0; transform: translateY(40px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ── Icon wrap ──────────────────────────────────────────────── */
+.splash-icon-wrap {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  filter: drop-shadow(0 0 30px rgba(123, 47, 247, 0.7));
+}
+
+.splash-heartbeat-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Heart beat animation */
+.splash-heart-path {
+  transform-origin: center;
+  animation: heartBeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.12); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.08); }
+  70%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+/* EKG draw animation */
+.splash-ekg-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawEKG 1.8s ease forwards 0.4s;
+}
+
+@keyframes drawEKG {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── Text area ──────────────────────────────────────────────── */
+.splash-text-wrap {
+  text-align: center;
+}
+
+.splash-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin: 0 0 6px;
+  line-height: 1;
+}
+
+.splash-heal {
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.splash-track {
+  background: linear-gradient(135deg, #7b2ff7, #e040fb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.splash-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 14px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.splash-tagline-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.splash-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(123, 47, 247, 0.7);
+  display: inline-block;
+}
+
+.splash-tagline {
+  font-weight: 300;
+}
+
+/* ── Loading bar ────────────────────────────────────────────── */
+.splash-loader-track {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.splash-loader-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #7b2ff7, #00d2ff, #7b2ff7);
+  background-size: 200% 100%;
+  animation: loaderSlide 3.2s ease forwards, shimmer 1.2s linear infinite;
+  width: 0%;
+}
+
+@keyframes loaderSlide {
+  0%   { width: 0%; }
+  20%  { width: 30%; }
+  50%  { width: 60%; }
+  80%  { width: 85%; }
+  100% { width: 100%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .splash-title { font-size: 2.2rem; }
+  .splash-icon-wrap { width: 90px; height: 90px; }
+  .splash-ring-outer { width: 300px; height: 300px; }
+  .splash-ring-inner { width: 200px; height: 200px; }
+}

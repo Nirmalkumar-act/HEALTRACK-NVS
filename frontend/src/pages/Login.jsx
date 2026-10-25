@@ -60,7 +60,8 @@ export default function Login() {
       const user = await response.json();
       login(user);
       setToast("✅ Login successful!");
-      setTimeout(() => navigate("/"), 800);
+      // Every login routes to the Instructions Tour (/onboarding)
+      setTimeout(() => navigate("/onboarding"), 700);
 
     } catch (err) {
       setToast("⚠️ Cannot reach server. Please wait a moment and try again.");
