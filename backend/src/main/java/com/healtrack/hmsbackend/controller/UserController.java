@@ -2,6 +2,7 @@ package com.healtrack.hmsbackend.controller;
 
 import com.healtrack.hmsbackend.model.User;
 import com.healtrack.hmsbackend.service.AuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +23,43 @@ public class UserController {
     // 🔹 Register
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        return ResponseEntity.ok(authService.register(user));
+        try {
+            User created = authService.register(user);
+            return ResponseEntity.ok(created);
+        } catch (IllegalStateException e) {
+            // Duplicate email
+            if ("EMAIL_ALREADY_REGISTERED".equals(e.getMessage())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("This email is already registered. Please login instead.");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Registration failed. Please try again.");
+        }
     }
 
     // 🔹 Login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        User user = authService.login(body.get("email"), body.get("password"));
-        if (user == null) {
-            return ResponseEntity.status(401).body("Invalid email or password");
+        try {
+            String email = body.get("email");
+            String password = body.get("password");
+            if (email == null || email.isBlank() || password == null || password.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email and password are required.");
+            }
+            User user = authService.login(email, password);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Invalid email or password. Please try again.");
+            }
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Login failed. Please try again.");
         }
-        return ResponseEntity.ok(user);
     }
 
     // 🔹 Get all users — for Excel export (Management only, passwords blanked)

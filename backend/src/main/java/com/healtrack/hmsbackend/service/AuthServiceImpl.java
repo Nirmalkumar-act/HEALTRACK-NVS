@@ -17,6 +17,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User register(User user) {
         if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (user.getEmail() == null || user.getEmail().isBlank())
+            throw new IllegalArgumentException("Email is required");
+        if (user.getPassword() == null || user.getPassword().isBlank())
+            throw new IllegalArgumentException("Password is required");
+
+        // ✅ Check for duplicate email BEFORE saving — prevents 500 DB constraint error
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalStateException("EMAIL_ALREADY_REGISTERED");
+        }
+
         if (user.getRole() == null || user.getRole().isEmpty()) user.setRole("USER");
         if (user.getName() == null || user.getName().isEmpty()) user.setName("Guest");
         return userRepository.save(user);
@@ -24,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User login(String email, String password) {
+        if (email == null || password == null) return null;
         return userRepository.findByEmail(email)
                 .filter(u -> u.getPassword().equals(password))
                 .orElse(null);
