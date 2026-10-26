@@ -27,9 +27,15 @@ public class CorsConfig {
         // Always include local dev origins
         origins.add("http://localhost:5173");
         origins.add("http://localhost:3000");
-        // Always include production Netlify URL as hardcoded fallback
+        origins.add("http://localhost:8080");
+        origins.add("http://localhost:8081");
+        // Always include production Netlify URL (lowercase, uppercase, hyphenated, wildcard)
+        origins.add("https://healtracknvs.netlify.app");
         origins.add("https://healtrackNVS.netlify.app");
         origins.add("https://healtrack-nvs.netlify.app");
+        origins.add("https://*.netlify.app");
+        origins.add("https://*.onrender.com");
+        origins.add("*");
         // Add any extra origins from environment variable (comma-separated)
         if (allowedOriginsRaw != null && !allowedOriginsRaw.isBlank()) {
             Arrays.stream(allowedOriginsRaw.split(","))
