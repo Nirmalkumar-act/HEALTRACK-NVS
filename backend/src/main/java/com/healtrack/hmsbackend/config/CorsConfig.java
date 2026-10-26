@@ -9,15 +9,36 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 public class CorsConfig {
 
-    // Set in application.properties or override via environment variable:
-    //   CORS_ALLOWED_ORIGIN=https://your-production-domain.netlify.app
-    @Value("${cors.allowed.origin:http://localhost:5173}")
-    private String allowedOrigin;
+    // Comma-separated list of allowed origins.
+    // Set CORS_ALLOWED_ORIGINS env var on Render with your Netlify URL.
+    // Example: https://healtrackNVS.netlify.app,https://custom-domain.com
+    @Value("${cors.allowed.origins:http://localhost:5173}")
+    private String allowedOriginsRaw;
+
+    private List<String> getAllowedOrigins() {
+        List<String> origins = new ArrayList<>();
+        // Always include local dev origins
+        origins.add("http://localhost:5173");
+        origins.add("http://localhost:3000");
+        // Always include production Netlify URL as hardcoded fallback
+        origins.add("https://healtrackNVS.netlify.app");
+        origins.add("https://healtrack-nvs.netlify.app");
+        // Add any extra origins from environment variable (comma-separated)
+        if (allowedOriginsRaw != null && !allowedOriginsRaw.isBlank()) {
+            Arrays.stream(allowedOriginsRaw.split(","))
+                  .map(String::trim)
+                  .filter(s -> !s.isEmpty())
+                  .forEach(origins::add);
+        }
+        return origins;
+    }
 
     /**
      * Used by Spring Security's .cors() to apply CORS headers at the filter chain level.
@@ -26,9 +47,10 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of(allowedOrigin, "http://localhost:5173", "http://localhost:3000"));
+        config.setAllowedOriginPatterns(getAllowedOrigins());
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        config.setAllowedHeaders(List.of("Content-Type", "Authorization", "X-Requested-With"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(false);
         config.setMaxAge(3600L);
 
@@ -46,9 +68,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns(allowedOrigin, "http://localhost:5173", "http://localhost:3000")
+                        .allowedOriginPatterns(getAllowedOrigins().toArray(new String[0]))
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                        .allowedHeaders("Content-Type", "Authorization", "X-Requested-With")
+                        .allowedHeaders("*")
+                        .exposedHeaders("Authorization")
                         .allowCredentials(false)
                         .maxAge(3600);
             }
