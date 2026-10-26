@@ -7,7 +7,7 @@
   NODE_VERSION = "20"
   # ✅ Production backend API URL — Render service
   # Update this if your Render service URL changes
-  VITE_API_URL = "https://healtrack-mvs.onrender.com/api"
+  VITE_API_URL = "https://healtrack-nvs.onrender.com/api"
 
 # SPA routing — all React routes work on Netlify
 [[redirects]]
