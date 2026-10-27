@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, CheckCircle, WifiOff } from "lucide-react";
 import "../styles/Auth.css";
 
 const BASE = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
+
+const WAKE_STATE = {
+  WAKING: "waking",
+  READY:  "ready",
+  FAILED: "failed",
+};
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -14,15 +20,59 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [role,         setRole]         = useState("User");
   const [toast,        setToast]        = useState("");
-  const [toastType,    setToastType]    = useState("info"); // "success" | "error" | "info"
+  const [toastType,    setToastType]    = useState("info");
   const [loading,      setLoading]      = useState(false);
+  const [wakeState,    setWakeState]    = useState(WAKE_STATE.WAKING);
+  const [wakeSeconds,  setWakeSeconds]  = useState(0);
 
-  const showToast = (msg, type = "info") => {
+  const showToast = useCallback((msg, type = "info") => {
     setToast(msg);
     setToastType(type);
-    // Auto-hide after 5s
     setTimeout(() => setToast(""), 5000);
-  };
+  }, []);
+
+  // ── Pre-warm Render backend as soon as Signup page mounts ─────────────────
+  useEffect(() => {
+    let cancelled = false;
+    let timerId;
+
+    const countdownId = setInterval(() => {
+      setWakeSeconds(s => s + 1);
+    }, 1000);
+
+    const tryWakeUp = async () => {
+      try {
+        await fetch(`${BASE}/auth/register`, {
+          method: "OPTIONS",
+          signal: AbortSignal.timeout(28000),
+        });
+        if (!cancelled) {
+          setWakeState(WAKE_STATE.READY);
+          clearInterval(countdownId);
+        }
+      } catch {
+        if (!cancelled) {
+          setWakeState(WAKE_STATE.FAILED);
+          clearInterval(countdownId);
+        }
+      }
+    };
+
+    tryWakeUp();
+
+    timerId = setTimeout(() => {
+      if (!cancelled) {
+        setWakeState(prev => prev === WAKE_STATE.WAKING ? WAKE_STATE.FAILED : prev);
+        clearInterval(countdownId);
+      }
+    }, 30000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timerId);
+      clearInterval(countdownId);
+    };
+  }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -30,7 +80,6 @@ export default function Signup() {
     setToast("");
     setLoading(true);
 
-    // Basic client-side validation
     if (!email.trim() || !password.trim()) {
       showToast("❌ Email and password are required.", "error");
       setLoading(false);
@@ -42,17 +91,32 @@ export default function Signup() {
       return;
     }
 
-    try {
+    const doRegister = async () => {
       const res = await fetch(`${BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password, role }),
+        signal: AbortSignal.timeout(40000), // 40s for cold-start
       });
+      return res;
+    };
+
+    try {
+      let res;
+      try {
+        res = await doRegister();
+      } catch {
+        // Auto-retry once on timeout/network error
+        await new Promise(r => setTimeout(r, 1500));
+        res = await doRegister();
+      }
 
       const text = await res.text();
 
+      // Mark server ready now that we got a response
+      setWakeState(WAKE_STATE.READY);
+
       if (res.status === 409) {
-        // Duplicate email — clear, friendly message
         showToast("⚠️ This email is already registered. Please login instead.", "error");
         return;
       }
@@ -65,8 +129,8 @@ export default function Signup() {
       showToast("✅ Account created! Redirecting to login…", "success");
       setTimeout(() => navigate("/login"), 1400);
 
-    } catch (err) {
-      showToast("⚠️ Cannot reach server. Please check your connection and try again.", "error");
+    } catch {
+      showToast("⚠️ Cannot reach server. Please wait a moment and try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -104,6 +168,60 @@ export default function Signup() {
       >
         <h1>Create Account</h1>
         <p className="subtitle">Join the HMS platform</p>
+
+        {/* ── Server wake-up status banner ── */}
+        <AnimatePresence mode="wait">
+          {wakeState === WAKE_STATE.WAKING && (
+            <motion.div
+              key="waking"
+              className="wake-banner wake-banner--waking"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="wake-icon wake-spin">⏳</span>
+              <span>
+                Waking up server
+                <span className="wake-dots">
+                  <span>.</span><span>.</span><span>.</span>
+                </span>
+              </span>
+              {wakeSeconds > 5 && (
+                <span className="wake-tip">
+                  (Render free tier — may take ~{Math.max(0, 30 - wakeSeconds)}s)
+                </span>
+              )}
+            </motion.div>
+          )}
+
+          {wakeState === WAKE_STATE.READY && (
+            <motion.div
+              key="ready"
+              className="wake-banner wake-banner--ready"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CheckCircle size={14} />
+              <span>Server ready — you can sign up now</span>
+            </motion.div>
+          )}
+
+          {wakeState === WAKE_STATE.FAILED && (
+            <motion.div
+              key="failed"
+              className="wake-banner wake-banner--failed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <WifiOff size={14} />
+              <span>Server might be slow — try signing up anyway</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <form onSubmit={handleSignup} className="auth-form">
           {/* Email */}
@@ -158,7 +276,14 @@ export default function Signup() {
             disabled={loading}
             style={{ opacity: loading ? 0.72 : 1 }}
           >
-            {loading ? "⏳ Creating account…" : "Sign Up"}
+            {loading ? (
+              <span className="btn-loading">
+                <span className="btn-spinner" />
+                Creating account…
+              </span>
+            ) : (
+              "Sign Up"
+            )}
           </motion.button>
 
           <p className="auth-links">

@@ -1,11 +1,18 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Wifi, WifiOff, CheckCircle } from "lucide-react";
 import "../styles/Auth.css";
 import { AuthContext } from "../context/AuthContext";
 
 const BASE = (import.meta.env.VITE_API_URL || "http://localhost:8081/api").replace(/\/$/, "");
+
+// Server warm-up states
+const WAKE_STATE = {
+  WAKING: "waking",   // trying to connect
+  READY:  "ready",    // server responded
+  FAILED: "failed",   // could not reach (still lets user try)
+};
 
 export default function Login() {
   const { login }  = useContext(AuthContext);
@@ -17,31 +24,59 @@ export default function Login() {
   const [toast,        setToast]        = useState("");
   const [toastType,    setToastType]    = useState("info");
   const [loading,      setLoading]      = useState(false);
-  const [serverReady,  setServerReady]  = useState(false);
-  const [waking,       setWaking]       = useState(true);
+  const [wakeState,    setWakeState]    = useState(WAKE_STATE.WAKING);
+  const [wakeSeconds,  setWakeSeconds]  = useState(0);
 
-  const showToast = (msg, type = "info") => {
+  const showToast = useCallback((msg, type = "info") => {
     setToast(msg);
     setToastType(type);
     setTimeout(() => setToast(""), 5000);
-  };
+  }, []);
 
-  // ── Pre-warm Render server as soon as page loads ──────────────────────────
+  // ── Pre-warm Render backend as soon as Login page mounts ──────────────────
   useEffect(() => {
     let cancelled = false;
-    const warmUp = async () => {
+    let timerId;
+
+    // Countdown timer — shows user how long we've been waking
+    const countdownId = setInterval(() => {
+      setWakeSeconds(s => s + 1);
+    }, 1000);
+
+    const tryWakeUp = async () => {
       try {
-        await fetch(`${BASE}/auth/login`, { method: "OPTIONS" });
-        if (!cancelled) { setServerReady(true); setWaking(false); }
+        const res = await fetch(`${BASE}/auth/login`, {
+          method: "OPTIONS",
+          signal: AbortSignal.timeout(28000), // 28s max
+        });
+        if (!cancelled) {
+          setWakeState(WAKE_STATE.READY);
+          clearInterval(countdownId);
+        }
       } catch {
-        // Even if it fails, let the user try — server may still respond
-        if (!cancelled) { setServerReady(true); setWaking(false); }
+        // Network fail or timeout — don't block user, just mark failed
+        if (!cancelled) {
+          setWakeState(WAKE_STATE.FAILED);
+          clearInterval(countdownId);
+        }
       }
     };
-    warmUp();
-    // Safety timeout — stop showing "waking" after 8 seconds no matter what
-    const t = setTimeout(() => { if (!cancelled) { setServerReady(true); setWaking(false); } }, 8000);
-    return () => { cancelled = true; clearTimeout(t); };
+
+    tryWakeUp();
+
+    // Hard cap: after 30s always allow user to proceed
+    timerId = setTimeout(() => {
+      if (!cancelled) {
+        setWakeState(prev => prev === WAKE_STATE.WAKING ? WAKE_STATE.FAILED : prev);
+        clearInterval(countdownId);
+      }
+    }, 30000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timerId);
+      clearInterval(countdownId);
+    };
   }, []);
 
   const handleLogin = async (e) => {
@@ -50,60 +85,68 @@ export default function Login() {
     setLoading(true);
     setToast("");
 
-    // Basic client-side validation
     if (!email.trim() || !password.trim()) {
       showToast("❌ Email and password are required.", "error");
       setLoading(false);
       return;
     }
 
-    try {
+    const doLogin = async () => {
       const response = await fetch(`${BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password }),
+        signal: AbortSignal.timeout(40000), // 40s for cold-start login
       });
 
-      // Read response body as text first (safe for both JSON and plain text)
       const rawText = await response.text();
 
       if (!response.ok) {
-        // Try to extract message from JSON error body (Spring Boot sends JSON for 500s)
         let errorMsg = rawText;
         try {
           const errJson = JSON.parse(rawText);
           errorMsg = errJson.message || errJson.error || rawText;
-        } catch {
-          // rawText is plain text — use as is
-        }
+        } catch { /* plain text — use as is */ }
 
         if (response.status === 401) {
-          showToast("❌ Invalid email or password. Please try again.", "error");
+          throw { type: "auth", msg: "❌ Invalid email or password. Please try again." };
         } else if (response.status === 500) {
-          showToast("⚠️ Server error. Please try again in a moment.", "error");
+          throw { type: "server", msg: "⚠️ Server error. Please try again in a moment." };
         } else {
-          showToast(`❌ ${errorMsg || "Login failed. Please try again."}`, "error");
+          throw { type: "other", msg: `❌ ${errorMsg || "Login failed. Please try again."}` };
         }
-        setLoading(false);
-        return;
       }
 
-      // Parse as JSON (login success)
+      return JSON.parse(rawText);
+    };
+
+    try {
       let user;
       try {
-        user = JSON.parse(rawText);
-      } catch {
-        showToast("⚠️ Unexpected server response. Please try again.", "error");
-        setLoading(false);
-        return;
+        user = await doLogin();
+      } catch (err) {
+        // Auto-retry once on network/timeout errors (cold start)
+        if (err?.type) throw err; // known API error — don't retry
+        await new Promise(r => setTimeout(r, 1500));
+        user = await doLogin();
       }
 
+      // Mark server as ready now that we got a real response
+      setWakeState(WAKE_STATE.READY);
       login(user);
       showToast("✅ Login successful!", "success");
       setTimeout(() => navigate("/onboarding"), 700);
 
     } catch (err) {
-      showToast("⚠️ Cannot reach server. Please wait a moment and try again.", "error");
+      if (err?.type === "auth") {
+        showToast(err.msg, "error");
+      } else if (err?.type === "server") {
+        showToast(err.msg, "error");
+      } else if (err?.type === "other") {
+        showToast(err.msg, "error");
+      } else {
+        showToast("⚠️ Cannot reach server. Please wait a moment and try again.", "error");
+      }
     } finally {
       setLoading(false);
     }
@@ -142,36 +185,59 @@ export default function Login() {
         <h1>Welcome to HMS</h1>
         <p className="subtitle">Login to manage hospital efficiently</p>
 
-        {/* Server wake-up indicator */}
-        {waking && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            style={{
-              fontSize: "0.82rem",
-              color: "#fdcb6e",
-              textAlign: "center",
-              marginBottom: "8px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "6px"
-            }}
-          >
-            <span style={{ animation: "spin 1s linear infinite", display:"inline-block" }}>⏳</span>
-            Connecting to server… (first load may take ~30s)
-          </motion.p>
-        )}
+        {/* ── Server wake-up status banner ── */}
+        <AnimatePresence mode="wait">
+          {wakeState === WAKE_STATE.WAKING && (
+            <motion.div
+              key="waking"
+              className="wake-banner wake-banner--waking"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="wake-icon wake-spin">⏳</span>
+              <span>
+                Waking up server
+                <span className="wake-dots">
+                  <span>.</span><span>.</span><span>.</span>
+                </span>
+              </span>
+              {wakeSeconds > 5 && (
+                <span className="wake-tip">
+                  (Render free tier — may take ~{Math.max(0, 30 - wakeSeconds)}s)
+                </span>
+              )}
+            </motion.div>
+          )}
 
-        {serverReady && !waking && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            style={{ fontSize: "0.82rem", color: "#00cec9", textAlign: "center", marginBottom: "8px" }}
-          >
-            ✅ Server ready
-          </motion.p>
-        )}
+          {wakeState === WAKE_STATE.READY && (
+            <motion.div
+              key="ready"
+              className="wake-banner wake-banner--ready"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CheckCircle size={14} />
+              <span>Server ready — you can login now</span>
+            </motion.div>
+          )}
+
+          {wakeState === WAKE_STATE.FAILED && (
+            <motion.div
+              key="failed"
+              className="wake-banner wake-banner--failed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <WifiOff size={14} />
+              <span>Server might be slow — try logging in anyway</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <form onSubmit={handleLogin} className="auth-form">
           <div className="form-group">
@@ -214,7 +280,14 @@ export default function Login() {
             disabled={loading}
             style={{ opacity: loading ? 0.75 : 1 }}
           >
-            {loading ? "⏳ Logging in…" : "Login"}
+            {loading ? (
+              <span className="btn-loading">
+                <span className="btn-spinner" />
+                Logging in…
+              </span>
+            ) : (
+              "Login"
+            )}
           </motion.button>
 
           <p className="auth-links">
